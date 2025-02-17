@@ -1,0 +1,20 @@
+from typing import (
+    List,
+)
+
+class Solution:
+    def sort_colors(self, nums: List[int]):
+        l,r,s = 0, len(nums)-1, 0
+
+        while l<r and s<=r:
+            if nums[s] == 0:
+                nums[l], nums[s] = nums[s], nums[l]
+                l+=1
+                s+=1
+            elif nums[s] == 2:
+                nums[r], nums[s] = nums[s], nums[r]
+                r-=1
+            else:
+                s+=1
+        
+        
