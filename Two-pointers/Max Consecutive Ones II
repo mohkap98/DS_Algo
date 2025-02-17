@@ -1,0 +1,30 @@
+from typing import (
+    List,
+)
+
+class Solution:
+    
+    def find_max_consecutive_ones(self, nums: List[int]) -> int:
+        # write your code here
+        l,r = 0, 0
+        n = len(nums)
+        flipped = False
+        max_len = 0
+
+        while l<=r and r < n:
+            if nums[r] == 1:
+                r+=1
+            else:
+                if not flipped:
+                    flipped = True
+                    r+=1
+                else:
+                    max_len = max(max_len, r-l)
+                    while nums[l] == 1:
+                        l+=1
+                    flipped = False
+                    l+=1
+        
+        max_len = max(max_len, r-l)
+        return max_len
+
