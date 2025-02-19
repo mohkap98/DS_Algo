@@ -1,0 +1,19 @@
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        words = s.split()
+        w = len(words)
+        for i in range(w):
+            word = list(words[i])
+            l, r = 0, len(word)-1
+            self.reverseWord(word, l, r)
+            words[i] = "".join(word)
+
+        return " ".join(words)
+    
+    def reverseWord(self, word, st, end):
+        while st < end:
+            word[st], word[end] = word[end], word[st]
+            st += 1
+            end -=1 
+        
+        
