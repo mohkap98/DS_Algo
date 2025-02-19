@@ -1,0 +1,18 @@
+class Solution:
+    def maxWidthRamp(self, nums: List[int]) -> int:
+        ramp = 0
+        n = len(nums)
+        maxxes = [0] * n
+        maxxes[n-1] = nums[n-1]
+        for i in range(n-2,-1,-1):
+            maxxes[i] = max(maxxes[i+1], nums[i])
+
+        i,j = 0,0 
+        while i < n and j < n:
+            if nums[i] <= maxxes[j]:
+                j+=1        
+                ramp = max(ramp, j-i-1)
+            else:
+                i+=1
+        return ramp
+
