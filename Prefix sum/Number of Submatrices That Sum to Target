@@ -1,0 +1,22 @@
+class Solution:
+    def numSubmatrixSumTarget(self, matrix: List[List[int]], target: int) -> int:
+        m,n = len(matrix), len(matrix[0])
+        output = 0
+        
+        # row-wise cummulative sum 
+        for i in range(m):
+            for j in range(1, n):
+                matrix[i][j] += matrix[i][j-1]
+        
+        for start in range(n):
+            for end in range(start, n):
+                mapp = defaultdict(int)
+                mapp[0] = 1
+                psum = 0
+                for row in range(m):
+                    psum += matrix[row][end] - (matrix[row][start-1] if start > 0 else 0)
+                    if psum - target in mapp:
+                        output += mapp[psum - target]
+                    mapp[psum] += 1
+        
+        return output
