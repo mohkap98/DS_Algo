@@ -1,0 +1,14 @@
+class Solution:
+    def subarraysDivByK(self, nums: List[int], k: int) -> int:
+        mapp = defaultdict(int)
+        mapp[0] = 1
+        cnt = 0
+        
+        for ps in accumulate(nums):
+            if ps % k in mapp:
+                cnt += mapp[ps % k]
+            mapp[ps % k] += 1
+        
+        return cnt 
+
+        
