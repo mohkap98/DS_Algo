@@ -1,0 +1,25 @@
+from typing import (
+    List,
+)
+
+class Solution:
+    
+    def max_sub_array_len(self, nums: List[int], k: int) -> int:
+        
+        psum = 0
+        max_len = 0
+        mapp = dict()
+
+        for i in range(len(nums)):
+            psum += nums[i]
+            if psum == k:
+                max_len = max(max_len, i+1)
+            
+            rem = psum - k
+            if rem in mapp:
+                max_len = max(max_len, i-mapp[rem])
+            
+            if psum not in mapp:
+                mapp[psum] = i
+
+        return max_len 
