@@ -1,0 +1,18 @@
+class Solution:
+    def findMaxLength(self, nums: List[int]) -> int:
+        mapp = dict()
+        mapp[0] = -1
+        psum = 0
+        maxLen = 0
+        for i in range(len(nums)):
+            if nums[i] == 0:
+                psum -= 1
+            else:
+                psum += 1
+            if psum in mapp:
+                maxLen = max(maxLen, i - mapp[psum])
+            else:
+                mapp[psum] = i
+
+        return maxLen
+        
