@@ -1,0 +1,14 @@
+class Solution:
+    def checkSubarraySum(self, nums: List[int], k: int) -> bool:
+        mapp = defaultdict(int)
+        psum = 0
+        mapp[0] = -1
+        for i in range(len(nums)):
+            psum += nums[i]
+            if psum % k in mapp:
+                if i - mapp[psum % k] > 1:
+                    return True
+            else:
+                mapp[psum % k] = i
+        
+        return False
