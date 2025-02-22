@@ -1,0 +1,24 @@
+class Solution:
+    def garbageCollection(self, garbage: List[str], travel: List[int]) -> int:
+        paper, metal, glass = 0,0,0
+        time = 0
+        for i, house_garbage in enumerate(garbage):
+            time += len(house_garbage)
+            
+            if 'P' in house_garbage:
+                paper = i
+            if 'M' in house_garbage:
+                metal = i
+            if 'G' in house_garbage:
+                glass = i
+        
+        # prefix sum 
+        for i in range(1, len(travel)):
+            travel[i] += travel[i-1]
+        
+        time += travel[metal-1] if metal > 0 else 0
+        time += travel[paper-1] if paper > 0 else 0
+        time += travel[glass-1] if glass > 0 else 0
+
+        return time
+
