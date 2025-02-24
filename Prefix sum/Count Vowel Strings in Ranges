@@ -1,0 +1,20 @@
+class Solution:
+    def vowelStrings(self, words: List[str], queries: List[List[int]]) -> List[int]:
+        vowels = {'a','e','i','o','u'}
+        psum = [0] * len(words)
+        
+        for i in range(len(words)):
+            psum[i] = 1 if (words[i][0] in vowels and words[i][-1] in vowels) else 0
+            psum[i] += (psum[i-1] if i > 0 else 0)
+
+        output = []
+
+        for start, end in queries:
+            if start == 0:
+                output.append(psum[end])
+            else:
+                output.append(psum[end] - psum[start-1])
+        
+        return output
+
+            
