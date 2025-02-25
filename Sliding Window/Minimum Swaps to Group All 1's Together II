@@ -1,0 +1,23 @@
+class Solution:
+    def minSwaps(self, arr: List[int]) -> int:
+        total_ones = sum(arr)        
+        swaps = total_ones
+        window_ones = 0
+        l = 0
+
+        n = len(arr)
+        for r in range(2 * n):
+            if arr[r % n] == 1:
+                window_ones += 1
+
+            if r-l+1 > total_ones:
+                if arr[l % n] == 1:
+                    window_ones -= 1
+                l+=1
+            
+            if r-l+1 == total_ones:
+                swaps = min(swaps, total_ones - window_ones)
+        
+
+        return swaps
+        
