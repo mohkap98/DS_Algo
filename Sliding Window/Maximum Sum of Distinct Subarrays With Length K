@@ -1,0 +1,24 @@
+class Solution:
+    def maximumSubarraySum(self, nums: List[int], k: int) -> int:
+        seen = defaultdict(int)
+        summ, maxx = 0,0
+        l,r = 0,0
+        while r < len(nums):
+            summ += nums[r]
+            seen[nums[r]] += 1
+            
+            if r-l+1 > k:
+                seen[nums[l]] -=1
+                if not seen[nums[l]]:
+                    del seen[nums[l]]
+                summ -= nums[l]
+                l+=1 
+            if r-l+1 == k and len(seen) == k:
+                maxx = max(maxx, summ)
+            
+            r+=1
+        return maxx
+
+
+        
+        
