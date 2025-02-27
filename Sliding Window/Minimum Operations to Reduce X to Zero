@@ -1,0 +1,18 @@
+class Solution:
+    def minOperations(self, nums: List[int], x: int) -> int:
+        # if we can get longest subarr sum equal to sum(arr) - x then its done
+
+        n = len(nums)
+        summ, maxi = 0, -inf
+        tar = sum(nums) - x
+        l,r = 0,0
+        while r < n:
+            summ += nums[r]
+            while l <= r and summ > tar:
+                summ -= nums[l]
+                l+=1
+            if summ == tar:
+                maxi = max(maxi, r-l+1)
+            r+=1
+        
+        return n - maxi if maxi != -inf else -1
