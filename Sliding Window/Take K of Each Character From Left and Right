@@ -1,0 +1,25 @@
+class Solution:
+    def takeCharacters(self, s: str, k: int) -> int:
+        # this problem is not trivial to sliding window.
+        # Need to invert the question and then reverse engineer. 
+
+        if not k:
+            return 0
+        
+        freq = Counter(s)
+
+        if freq['a'] < k or freq['b'] < k or freq['c'] < k:
+            return -1
+        
+        l,r = 0,0
+        max_window = 0
+        while r < len(s):
+            freq[s[r]] -= 1
+            while freq[s[r]] < k:
+                max_window = max(max_window, r-l)
+                freq[s[l]] += 1
+                l+=1
+            r+=1
+        
+        max_window = max(max_window, r-l)    
+        return len(s) - max_window
