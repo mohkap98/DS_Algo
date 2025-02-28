@@ -1,0 +1,27 @@
+
+class Solution:
+    def shortestSubarray(self, nums: List[int], k: int) -> int:
+        dq = deque()
+        res = float('inf')  
+        cum_sum = 0
+        
+        # Initialize deque with (sum, index)
+        dq.append((0, -1))  
+        
+        for i in range(len(nums)):
+            cum_sum += nums[i]
+
+            # Check for a valid subarray
+            while dq and cum_sum - dq[0][0] >= k:
+                res = min(res, i - dq[0][1])
+                dq.popleft()
+            
+            # Maintain a monotonic increasing deque
+            while dq and dq[-1][0] >= cum_sum:
+                dq.pop()
+            
+            # Add current cumulative sum and index
+            dq.append((cum_sum, i))
+        
+        # Return result or -1 if no valid subarray
+        return res if res != float('inf') else -1
