@@ -1,0 +1,36 @@
+
+
+# BRUTE FORCE 
+class Solution:
+    def maxSlidingWindow(self, nums, k: int):
+        dq = deque()
+        res = []
+        for i in range(len(nums)):
+            dq.append(nums[i])
+            if len(dq) == k:
+                res.append(max(dq))
+                dq.popleft()
+        return res
+
+# OPTIMAL 
+class Solution:
+    def maxSlidingWindow(self, nums, k: int):
+        dq = deque()
+        res = []
+        l,r = 0,0
+        while r < len(nums):
+            if not dq:
+                dq.append(nums[r])
+            if nums[r] > dq[0]:
+                dq.popleft()
+                dq.append(nums[r])
+            
+            if r-l+1 > k:
+                if nums[l] == dq[0]:
+                    dq.popleft()
+                l+=1
+
+            if r-l+1 == k:
+                res.append(dq[0])
+            r+=1
+        return res
