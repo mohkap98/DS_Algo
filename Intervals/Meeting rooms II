@@ -1,0 +1,19 @@
+In this code, we can't just use the compare logic for 2 subsequent meetings, as there might be past rooms that have gone empty and can be used. So we need a 
+dynamic data structure like heap to store meeting that have ended in past. 
+
+import heapq
+class Solution:
+    def min_meeting_rooms(self, intervals: List[Interval]) -> int:
+        # Write your code here
+        intervals.sort(key = lambda x : x.start)
+        # min-heap
+        min_rooms = []
+
+        for interval in intervals:
+            if min_rooms and min_rooms[0] <= interval.start:
+                heapq.heappop(min_rooms)
+            
+            heapq.heappush(min_rooms, interval.end)
+        
+        return len(min_rooms)
+
