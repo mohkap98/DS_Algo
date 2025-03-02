@@ -1,0 +1,17 @@
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        res = []
+        new_st, new_end = newInterval
+        
+        for st, end in intervals:
+            if end < new_st:
+                res.append([st, end])
+            elif st > new_end:
+                res.append([new_st, new_end])
+                new_st, new_end = st, end
+            else:
+                new_st = min(new_st, st)
+                new_end = max(new_end, end)
+
+        res.append([new_st, new_end])
+        return res
