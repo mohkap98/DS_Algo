@@ -1,0 +1,40 @@
+
+"""
+Definition of Interval:
+class Interval(object):
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+"""
+
+class Solution:
+    def employee_free_time(self, schedule: List[List[int]]) -> List[Interval]:
+        # Write your code here
+        updated_sch = []
+        for sch in schedule:
+            for i in range(0,len(sch),2):
+                updated_sch.append(sch[i:i+2])
+
+        updated_sch.sort(key=lambda x:x[0])
+        prev = updated_sch[0]
+        work_times = []
+
+        for st, end in updated_sch[1:]:
+            if st <= prev[1]:
+                prev = [min(prev[0], st), max(prev[1], end)]
+            else:
+                work_times.append(prev)
+                prev = [st, end]
+        work_times.append(prev)
+
+        free_times = []
+        for i in range(1, len(work_times)):
+            free_times.append(Interval(work_times[i-1][1], work_times[i][0]))
+        
+        return free_times
+
+
+
+
+
+
