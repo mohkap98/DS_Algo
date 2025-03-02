@@ -1,0 +1,39 @@
+There are 4 cases of intersection - 
+1. A contained in B
+  A = [2.3] and B = [1,6] 
+
+2. B contained in A 
+
+3. Endpoint A = startpoint B 
+A = [1,5] B =[5,10]
+
+4. Partial Intersection 
+A = [4,7] B = [6,10]
+
+In all cases, ans = [max(s1, s2), min(e1,e2)]
+
+
+class Solution:
+    def intervalIntersection(self, firstList: List[List[int]], secondList: List[List[int]]) -> List[List[int]]:
+        
+        if not firstList or not secondList:
+            return []
+        
+        p1, p2 = 0,0
+        res = []
+
+        while p1 < len(firstList) and p2 < len(secondList):
+            s1, e1 = firstList[p1]
+            s2, e2 = secondList[p2]
+
+            if e1 < s2:
+                p1 += 1
+            elif e2 < s1:
+                p2 += 1
+            else:
+                res.append([max(s1, s2), min(e1, e2)])
+                if e1 < e2:
+                    p1 += 1
+                else:
+                    p2 += 1
+        return res
