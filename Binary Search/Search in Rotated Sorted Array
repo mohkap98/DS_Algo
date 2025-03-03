@@ -1,0 +1,28 @@
+from typing import List
+
+class Solution:
+    def search(self, a: List[int], target: int) -> int:
+        l, r = 0, len(a) - 1
+        
+        while l <= r:
+            m = (l + r) // 2
+            
+            # If the element is found
+            if a[m] == target:
+                return m
+            
+            # Check if the left side is sorted
+            if a[l] <= a[m]:
+                if a[l] <= target < a[m]:
+                    r = m - 1
+                else:
+                    l = m + 1
+            # Otherwise, the right side is sorted
+            else:
+                if a[m] < target <= a[r]:
+                    l = m + 1
+                else:
+                    r = m - 1
+        
+        # If the element is not found
+        return -1
