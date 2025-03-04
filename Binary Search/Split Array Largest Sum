@@ -1,0 +1,23 @@
+class Solution:
+    def splitArray(self, nums: List[int], k: int) -> int:
+        l,r = max(nums), sum(nums)
+        ans = r
+        while l<=r:
+            mid = (l+r)//2
+            if self.checkSoln(nums, k, mid):
+                ans = min(ans, mid)
+                r = mid -1
+            else:
+                l = mid +1
+        return ans 
+    
+    def checkSoln(self, nums, k, thresold):
+        summ = 0
+        subarr = 0
+        for i in nums:
+            summ += i
+            if summ > thresold:
+                subarr += 1
+                summ = i
+        subarr += 1
+        return subarr <= k
