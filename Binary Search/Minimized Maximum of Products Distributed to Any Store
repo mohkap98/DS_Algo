@@ -1,0 +1,20 @@
+class Solution:
+    def minimizedMaximum(self, n: int, quantities: List[int]) -> int:
+        l,r = 1, max(quantities)
+        ans = r
+        while l<=r:
+            mid = (l+r) // 2
+            if self.productDistribution(mid, quantities) <= n:
+                ans = mid 
+                r = mid - 1
+            else:
+                l = mid + 1
+        return ans 
+
+    def productDistribution(self, thresold, quantities):
+        customers = 0
+        for i in range(len(quantities)):
+            customers = customers + ceil(quantities[i] / thresold)
+        return customers
+            
+
