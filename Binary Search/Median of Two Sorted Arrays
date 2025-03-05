@@ -17,3 +17,45 @@ class Solution:
         totalLen = m + n
         median = res[totalLen // 2] if totalLen % 2 == 1 else (res[totalLen // 2] + res[(totalLen // 2)-1]) / 2 
         return median
+
+
+Optimal 
+
+The concept is simple. If we can somehow divide the array such that all the smaller values are on the left and 
+larger on the right. The median 
+if len (odd) = max(left)
+if len (even) = max(left) + min(right) / 2 
+
+This will be a hypothetical segregation by using binary search. 
+
+class Solution:
+    def findMedianSortedArrays(self, a, b):
+        if len(a) > len(b):
+            a,b = b,a
+        m, n = len(a), len(b)
+        l,r = 0,m
+        tne = m + n
+        while l<=r:
+            a_left = (l+r)//2
+            b_left = (tne + 1)//2 - a_left
+
+            l1 = -inf if a_left == 0 else a[a_left-1]
+            l2 = -inf if b_left == 0 else b[b_left -1]
+
+            r1 = inf if a_left == m else a[a_left]
+            r2 = inf if b_left == n else b[b_left]
+
+            if l1<=r2 and l2<=r1:
+                if tne % 2 == 0:
+                    return (max(l1, l2) + min(r1, r2)) / 2.0
+                return max(l1, l2)
+            elif l1>r2:
+                r = a_left - 1
+            else:
+                l = a_left + 1
+        return 0 
+
+
+   
+
+    
