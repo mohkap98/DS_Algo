@@ -1,0 +1,26 @@
+For vertical Alignment, take the max from the col 
+
+
+class Solution:
+    def findPeakGrid(self, mat: List[List[int]]) -> List[int]:
+        m,n = len(mat), len(mat[0])
+        l,r = 0, n-1
+        while l<=r:
+            col = (l+r)//2
+            row = 0
+            for i in range(m):
+                if mat[row][col] < mat[i][col]:
+                    row = i
+            left_side = col - 1 < 0 or mat[row][col-1] < mat[row][col]
+            right_side = col + 1 >= n or mat[row][col+1] < mat[row][col]
+
+            if left_side and right_side:
+                return [row,col]
+            elif right_side:
+                r = col-1
+            else:
+                l = col+1 
+            
+                    
+            
+
