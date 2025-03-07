@@ -1,0 +1,26 @@
+class Solution:
+    def maxDistance(self, position: List[int], m: int) -> int:
+        position.sort()
+        ans = 0
+        min_force = 1
+        max_force = position[-1] - position[0]
+        while min_force <= max_force:
+            mid_force = (min_force + max_force) // 2
+            if self.placeBalls(mid_force, position, m) >= m:
+                ans = mid_force
+                min_force = mid_force + 1
+            else:
+                max_force = mid_force - 1
+        return ans
+    
+    def placeBalls(self, force, position, m):
+        balls = 1
+        prev = position[0]
+        for i in range(1, len(position)):
+            curr = position[i]
+            if curr - prev >= force:
+                balls += 1
+                prev = curr
+        return balls
+
+        
