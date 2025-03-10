@@ -1,0 +1,34 @@
+class Solution:
+    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head or not head.next:
+            return head
+        
+        # find middle pt 
+        slow = head
+        fast = head.next
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+        
+        temp = slow.next
+        slow.next = None
+
+        H1 = self.sortList(head)
+        H2 = self.sortList(temp)
+        return self.merge(H1, H2)
+
+    def merge(self, H1, H2):
+        dummy = ListNode(0)
+        res = dummy
+        while H1 and H2:
+            if H1.val <= H2.val:
+                res.next = H1
+                H1 = H1.next
+            else:
+                res.next = H2
+                H2 = H2.next
+            res = res.next
+        
+        # left elements
+        res.next = H1 or H2
+        return dummy.next
