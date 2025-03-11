@@ -1,0 +1,35 @@
+
+"""
+Definition of ListNode:
+class ListNode(object):
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+
+class Solution:
+    def plus_one(self, head: ListNode) -> ListNode:
+        rev_head = self.reverseLL(head)
+        curr = rev_head
+        rev_head.val += 1
+        carry = rev_head.val // 10
+        rev_head.val %= 10
+        while curr.next:
+            curr = curr.next
+            curr.val += carry
+            carry = curr.val // 10
+            curr.val %= 10
+        
+        if carry:
+            curr.next = ListNode(carry)
+        return self.reverseLL(rev_head)
+
+    def reverseLL(self, head):
+        prev = None
+        curr = head
+        while curr:
+            temp = curr.next
+            curr.next = prev
+            prev = curr
+            curr = temp
+        return prev
