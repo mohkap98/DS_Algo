@@ -1,0 +1,13 @@
+class Solution:
+    def nextGreaterElement(self, nums1, nums2):
+        res = [-1] * len(nums1)
+
+        mapper = {nums1[i] : i for i in range(len(nums1))}
+        stack = [] # mono decreasing 
+        for i in range(len(nums2)):
+            while stack and stack[-1] < nums2[i]:
+                popped = stack.pop()
+                res[mapper[popped]] = nums2[i]
+            if nums2[i] in mapper:
+                stack.append(nums2[i])
+        return res
