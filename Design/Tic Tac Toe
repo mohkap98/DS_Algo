@@ -1,0 +1,113 @@
+class GameBoard:
+    def __init__(self) -> None:
+        self.board = [['-' for _ in range(3)] for _ in range(3)]
+        self.moves = 0 # handle draws
+    
+    def print_board(self):
+        for rows in self.board:
+            print(" ".join(rows))
+        print()
+    
+    def make_move(self, row, col, marker):
+        # check if move is valid
+        if (row < 0 or row >= 3 or col < 0 or col >= 3) or self.board[row][col] != '-':
+            raise ValueError("Invaild move! Try Again.")
+        else:
+            self.board[row][col] = marker
+            self.moves += 1
+            return True
+    
+    def check_for_draw(self):
+        return self.moves == 9
+    
+    def check_for_win(self):
+        # vertical sweep
+        for col in range(3):
+            if self.board[0][col] != '-' and self.board[0][col] == self.board[1][col] == self.board[2][col]:
+                return True
+        
+        # horizontal sweep
+        for row in range(3):
+            if self.board[row][0] != '-' and self.board[row][0] == self.board[row][1] == self.board[row][2]:
+                return True
+        
+        # diagnal sweeps
+        if (self.board[0][0] != '-' and self.board[0][0] == self.board[1][1] == self.board[2][2]):
+            return True
+        
+        if (self.board[0][0] != '-' and self.board[0][2] == self.board[1][1] == self.board[2][0]):
+            return True
+        
+        return False
+
+
+# game1 = GameBoard()
+# game1.make_move(0,1,'O')
+# game1.make_move(0,0,'X')
+# game1.make_move(1,1,'O')
+# game1.make_move(1,0,'X')
+# game1.make_move(2,1,'O')
+# game1.print_board()
+# print(game1.check_for_win())
+
+class Player:
+    def __init__(self, name, marker) -> None:
+        self.name = name
+        self.marker = marker
+    
+    def get_name(self):
+        return self.name
+    
+    def get_marker(self):
+        return self.marker
+
+class Game:
+    def __init__(self, player1, player2) -> None:
+        self.player1 = player1
+        self.player2 = player2
+        self.board = GameBoard()
+        self.current_player = player1
+    
+    def play(self):
+        self.board.print_board()
+        while not self.board.check_for_win() and not self.board.check_for_draw():
+            print(f"{self.current_player.get_name()}'s turn")
+            row = self.check_move("Enter row 0-2: ")
+            col = self.check_move("Enter col 0-2: ")
+            
+            try:
+                self.board.make_move(row, col, self.current_player.get_marker())
+                self.board.print_board()
+                self.switch_player()
+            except ValueError as e:
+                print(str(e))
+    
+        if self.board.check_for_win():
+            self.switch_player()
+            print(f"{self.current_player.get_name()} wins!")
+        else:
+            print("It's a draw!")
+    
+    def switch_player(self):
+        self.current_player = self.player2 if self.current_player == self.player1 else self.player1
+    
+    def check_move(self, prompt):
+        while True:
+            try:
+                user_input = int(input(prompt))
+                if 0 <= user_input <= 2:
+                    return user_input
+                else:
+                    print("Invalid input! Please enter a number between 0 and 2.")
+            except ValueError:
+                print("Invalid input! Please enter a number between 0 and 2.")
+
+class TicTacToe:
+    @staticmethod
+    def run():
+        player1 = Player("P1", "X")    
+        player2 = Player("P2", "O")
+        game = Game(player1, player2)
+        game.play()
+
+TicTacToe.run()
