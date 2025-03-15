@@ -1,0 +1,35 @@
+class Solution:
+    def sumSubarrayMins(self, arr) -> int:
+        pse = self.PSE(arr)    
+        nse = self.NSE(arr)    
+        MOD = 10**9 + 7
+        summ = 0
+        for i in range(len(arr)):
+            cnt = (nse[i] - i) * (i - pse[i])
+            summ += arr[i] * cnt
+        
+        return summ % MOD
+
+
+    def NSE(self, arr):
+        n = len(arr)
+        nse = [n] * n 
+        stack = [] # mono increasing
+        for i in range(n):
+            while stack and arr[stack[-1]] >= arr[i]:
+                nse[stack.pop()] = i
+            stack.append(i)
+        
+        return nse
+    
+    def PSE(self, arr):
+        n = len(arr)
+        pse = [-1] * n 
+        stack = [] # mono increasing
+        for i in range(n-1, -1, -1):
+            while stack and arr[stack[-1]] > arr[i]:
+                pse[stack.pop()] = i
+            stack.append(i)
+        
+        return pse
+    
