@@ -1,0 +1,23 @@
+class Solution:
+    def calculate(self, s: str) -> int:
+        curr_operator = '+'
+        num = 0
+        stack = []
+        s = "".join(s.split())
+
+        for i in range(len(s)):
+            if s[i].isdigit():
+                num = num * 10 + int(s[i])
+            if s[i] in "+-*/" or i == len(s)-1:
+                if curr_operator == '+':
+                    stack.append(num)
+                elif curr_operator == '-':
+                    stack.append(-num)
+                elif curr_operator == '*':
+                    stack.append(stack.pop() * num)
+                elif curr_operator == '/':
+                    stack.append(int(stack.pop() / num))
+                num = 0
+                curr_operator = s[i]
+        
+        return sum(stack)
