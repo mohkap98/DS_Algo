@@ -1,0 +1,21 @@
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        stack = []
+
+        for tkn in tokens:
+            if tkn.lstrip('-').isdigit():
+                stack.append(int(tkn))
+            else:
+                n2 = stack.pop()
+                n1 = stack.pop()
+                if tkn == '+':
+                    stack.append(n1 + n2)
+                elif tkn == '-':
+                    stack.append(n1 - n2)
+                elif tkn == '*':
+                    stack.append(n1 * n2)
+                elif tkn == '/':
+                    stack.append(int(n1 / n2))
+        return stack[-1]
+                    
+        
