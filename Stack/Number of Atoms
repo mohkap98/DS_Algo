@@ -1,0 +1,55 @@
+from collections import defaultdict
+
+class Solution:
+    def countOfAtoms(self, formula: str) -> str:
+        stack = [defaultdict(int)]
+        i = 0
+        n = len(formula)
+
+        while i < n:
+            # Opening parenthesis '('
+            if formula[i] == '(':
+                stack.append(defaultdict(int))
+                i += 1  # Move to next character
+            
+            # Closing parenthesis ')'
+            elif formula[i] == ')':
+                curr_map = stack.pop()
+                i += 1  # Move past ')'
+
+                # Read the multiplier after ')'
+                count = 0
+                while i < n and formula[i].isdigit():
+                    count = count * 10 + int(formula[i])
+                    i += 1
+                count = max(count, 1)  # Default to 1 if no explicit number
+
+                prev_map = stack[-1]
+                for ele in curr_map:
+                    prev_map[ele] += curr_map[ele] * count
+
+            # Parsing an element (e.g., "H", "O", "Mg", "Fe", "Uub")
+            else:
+                # Extract the full element name (handles "Uub", "Mg", etc.)
+                element = formula[i]
+                i += 1
+                while i < n and formula[i].islower():  # Continue if lowercase
+                    element += formula[i]
+                    i += 1
+
+                # Read the count after the element (e.g., "H2", "O3", "Uub2")
+                count = 0
+                while i < n and formula[i].isdigit():
+                    count = count * 10 + int(formula[i])
+                    i += 1
+                count = max(count, 1)  # Default to 1 if no explicit number
+
+                stack[-1][element] += count
+
+        # Constructing the result string
+        final_map = stack.pop()
+        res = ""
+        for ele in sorted(final_map.keys()):
+            count = "" if final_map[ele] == 1 else str(final_map[ele])
+            res += ele + count
+        return res
