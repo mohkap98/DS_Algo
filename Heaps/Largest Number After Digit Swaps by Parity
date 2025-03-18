@@ -1,0 +1,21 @@
+import heapq
+
+class Solution:
+    def largestInteger(self, num: int) -> int:
+        num = list(str(num))  # Convert number to a list of string digits
+        evens = []
+        odds = []
+        
+        for digit in num:
+            if int(digit) % 2 == 0:
+                heapq.heappush(evens, -int(digit))
+            else:
+                heapq.heappush(odds, -int(digit))
+
+        for i in range(len(num)):
+            if int(num[i]) % 2 == 0:
+                num[i] = str(-heapq.heappop(evens))  
+            else:
+                num[i] = str(-heapq.heappop(odds))  
+
+        return int("".join(num))  # Convert list back to integer
