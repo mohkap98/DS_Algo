@@ -1,0 +1,16 @@
+class Solution:
+    def topKFrequent(self, words, x: int):
+        freq = Counter(words)
+        max_heap = []
+        
+        for k,v in freq.items():
+            max_heap.append((-v,k))
+        heapq.heapify(max_heap)
+        
+        res = []
+        while x>0:
+            popped = heapq.heappop(max_heap)[1]
+            res.append(popped)
+            x-=1
+        return res        
+        
