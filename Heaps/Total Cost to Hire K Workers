@@ -1,0 +1,33 @@
+class Solution:
+    def totalCost(self, costs, k: int, candidates: int) -> int:
+        n = len(costs)
+        i = 0
+        j = n-1
+        total = 0
+
+        MH1, MH2 = [], []
+        heapq.heapify(MH1)
+        heapq.heapify(MH2)
+
+        while k:
+            while len(MH1) < candidates and i <= j:
+                heapq.heappush(MH1, costs[i])
+                i+=1
+            while len(MH2) < candidates and j >= i:
+                heapq.heappush(MH2, costs[j])
+                j-=1
+            
+            min_MH1 = inf if not MH1 else MH1[0]
+            min_MH2 = inf if not MH2 else MH2[0]
+
+            if min_MH1 <= min_MH2:
+                total += heapq.heappop(MH1)
+            else:
+                total += heapq.heappop(MH2)
+            
+            k-=1
+    
+        return total
+
+
+            
