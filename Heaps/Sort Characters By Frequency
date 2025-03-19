@@ -1,0 +1,16 @@
+class Solution:
+    def frequencySort(self, s: str) -> str:
+        max_heap = []
+        freq = Counter(s)
+
+        for ch, v in freq.items():
+            heapq.heappush(max_heap, (-v, ch))
+        
+        res = []
+        while max_heap:
+            v, ch = heapq.heappop(max_heap)
+            res += [ch] * (-v)
+        
+        return "".join(res)
+        
+        
