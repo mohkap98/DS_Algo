@@ -1,0 +1,27 @@
+tclass Solution:
+    def reorganizeString(self, s: str) -> str:
+        max_heap = [(-cnt, ch) for ch, cnt in Counter(s).items()]
+        heapq.heapify(max_heap)
+        res = []
+
+        while max_heap:
+            cnt, ch = heapq.heappop(max_heap)
+            if not res:
+                res.append(ch)
+                cnt += 1
+            else:
+                if res[-1] == ch:
+                    if not max_heap:
+                        return ""
+                    else:
+                        cnt2, ch2 = heapq.heappop(max_heap)
+                        res.append(ch2)
+                        cnt2 += 1
+                        if cnt2:
+                            heapq.heappush(max_heap, (cnt2, ch2)) 
+                else:
+                    res.append(ch)
+                    cnt += 1   
+            if cnt:
+                heapq.heappush(max_heap, (cnt, ch))
+        return "".join(res)
