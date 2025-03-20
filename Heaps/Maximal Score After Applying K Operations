@@ -1,0 +1,16 @@
+class Solution:
+    def maxKelements(self, nums: List[int], k: int) -> int:
+        max_heap = [-num for num in nums]
+        heapq.heapify(max_heap)
+        score = 0
+        while k:
+            points = -heapq.heappop(max_heap)
+            score += points
+            k-=1
+            heapq.heappush(max_heap, -ceil(points / 3))
+        
+        return score
+
+
+
+        
