@@ -1,0 +1,23 @@
+
+class Solution:
+    def findMaximizedCapital(self, k: int, w: int, profits, capital) -> int:
+        
+        vec = [(cap, pfs) for cap, pfs in zip(capital, profits)]
+        
+        vec.sort()
+        
+        max_heap = []
+        heapq.heapify(max_heap)
+        i=0
+        for _ in range(k):
+            while i<len(vec) and vec[i][0] <= w:
+                heapq.heappush(max_heap, -vec[i][1]) 
+                i+=1
+            
+            if not max_heap:
+                break
+            
+            w += -(heapq.heappop(max_heap))
+        
+        return w
+           
