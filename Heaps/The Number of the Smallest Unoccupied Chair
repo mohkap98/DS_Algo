@@ -1,0 +1,21 @@
+class Solution:
+    def smallestChair(self, times, targetFriend: int):
+        
+        target = times[targetFriend]
+        times.sort()
+        occupied_chairs = []
+        avial_chairs = []
+        chair = 0
+        for st, end in times:
+            while occupied_chairs and occupied_chairs[0][0] <= st:
+                avial_chair = heapq.heappop(occupied_chairs)[1]
+                heapq.heappush(avial_chairs, avial_chair)
+                
+            if avial_chairs:
+                assigned_chair = heapq.heappop(avial_chairs)
+            else:
+                assigned_chair = chair
+                chair += 1
+            heapq.heappush(occupied_chairs, (end, assigned_chair))
+            if [st, end] == target:
+                return assigned_chair
