@@ -1,0 +1,24 @@
+import heapq
+from typing import List
+
+class Solution:
+    def maxAverageRatio(self, classes: List[List[int]], extraStudents: int) -> float:
+        # Step 1: Create a max-heap based on the ratio improvement
+        max_heap = []
+        for num_pass, num_total in classes:
+            ratio = num_pass / num_total
+            gain = (num_pass + 1) / (num_total + 1) - ratio  # Gain by adding a student
+            heapq.heappush(max_heap, (-gain, num_pass, num_total))  # Max heap (negative gain)
+
+        # Step 2: Assign extra students to the classes that gain the most
+        while extraStudents > 0:
+            gain, num_pass, num_total = heapq.heappop(max_heap)
+            num_pass += 1
+            num_total += 1
+            new_gain = (num_pass + 1) / (num_total + 1) - (num_pass / num_total)
+            heapq.heappush(max_heap, (-new_gain, num_pass, num_total))
+            extraStudents -= 1
+
+        # Step 3: Compute final average pass ratio
+        total_ratio = sum(num_pass / num_total for _, num_pass, num_total in max_heap)
+        return total_ratio / len(classes)
