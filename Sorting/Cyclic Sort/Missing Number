@@ -1,0 +1,16 @@
+class Solution:
+    def missingNumber(self, nums: List[int]) -> int:
+        i = 0
+        while i < len(nums):
+            correct_idx = nums[i]
+            if nums[i] == len(nums) or i == nums[i]:
+                i+=1
+            else:
+               nums[correct_idx], nums[i] = nums[i], nums[correct_idx]
+        
+        for i in range(len(nums)):
+            if nums[i] != i:
+                return i
+        return len(nums)
+
+        
