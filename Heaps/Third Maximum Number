@@ -1,0 +1,16 @@
+import heapq
+from typing import List
+
+class Solution:
+    def thirdMax(self, nums: List[int]) -> int:
+        unique_nums = set(nums)  # Remove duplicates
+        if len(unique_nums) < 3:
+            return max(unique_nums)  # Return max if less than 3 distinct numbers
+        
+        min_heap = []
+        for num in unique_nums:
+            heapq.heappush(min_heap, num)
+            if len(min_heap) > 3:
+                heapq.heappop(min_heap)  # Keep only the top 3 numbers
+
+        return heapq.heappop(min_heap)  # Return the third maximum
