@@ -1,0 +1,22 @@
+class Solution:
+    def isHappy(self, n: int) -> bool:
+        slow = n 
+        fast = self.get_next(n)
+
+        while fast != 1:
+            if slow == fast:
+                return False
+            slow = self.get_next(slow)
+            fast = self.get_next(self.get_next(fast))
+        
+        return True
+
+    def get_next(self, n: int):
+        output = 0
+        while n:
+            output += (n % 10)**2
+            n //= 10
+        return output
+
+            
+       
