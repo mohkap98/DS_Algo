@@ -1,0 +1,17 @@
+class Solution:
+    def findDisappearedNumbers(self, nums: List[int]) -> List[int]:
+        # Cycle sort - O(n) O(1) space
+        ans = []
+        i = 0
+        while i < len(nums):
+            correct = nums[i]-1
+            if nums[i] != nums[correct]:
+                nums[i], nums[correct] = nums[correct], nums[i]
+            else:
+                i+=1
+        
+        for i in range(len(nums)):
+            if i+1 != nums[i]:
+                ans.append(i+1)
+        
+        return ans 
