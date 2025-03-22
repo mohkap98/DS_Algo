@@ -1,0 +1,20 @@
+class Solution:
+    def maximumGap(self, nums: List[int]) -> int:
+        # counting sort
+        if len(nums) < 2:
+            return 0
+
+        n = max(nums) + 1
+        bucket = [0] * n 
+
+        for num in nums:
+            bucket[num] = 1
+        
+        max_diff = 0
+        prev = -1
+        for i in range(n):
+            if bucket[i]:
+                if prev != -1:
+                    max_diff = max(max_diff, i-prev)
+                prev = i
+        return max_diff
