@@ -1,0 +1,23 @@
+class Solution:
+    def findTheDistanceValue(self, arr1: List[int], arr2: List[int], d: int) -> int:
+        arr2.sort()
+        cnt = 0
+        for i in range(len(arr1)):
+            if self.check_valid(arr1[i], arr2, d):
+                cnt+=1
+        
+        return cnt
+    
+    def check_valid(self, num, arr2, d):
+        l,r = 0, len(arr2)-1
+        while l<=r:
+            mid = (l+r)//2
+            if abs(num - arr2[mid]) <= d:
+                return False
+            elif arr2[mid] < num:
+                l = mid + 1
+            else:
+                r = mid - 1  
+        return True
+                
+        
