@@ -1,0 +1,17 @@
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        hashed = [0] * 3
+
+        for i in nums:
+            hashed[i]+=1
+        
+        red, white, blue = hashed
+        nums[:red] = [0]*red
+        nums[red:red+white] = [1]*white
+        nums[red+white:] = [2]*blue
+
+        return nums
+
+        
+       
+        
