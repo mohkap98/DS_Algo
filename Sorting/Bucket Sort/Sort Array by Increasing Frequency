@@ -1,0 +1,20 @@
+class Solution:
+    def frequencySort(self, nums: List[int]) -> List[int]:
+        mapper = defaultdict(list)
+
+        for key, val in Counter(nums).items():
+            mapper[val].append(key)
+        
+        res = []
+        for key in sorted(mapper):
+            values = mapper[key]
+            for value in sorted(values)[::-1]:
+                res.extend([value] * key)
+        
+        return res
+
+
+  class Solution:
+    def frequencySort(self, nums: List[int]) -> List[int]:
+        freq = Counter(nums)
+        return sorted(nums, key=lambda x : (freq[x], -x))
