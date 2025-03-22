@@ -1,0 +1,19 @@
+class Solution:
+    def findRelativeRanks(self, scores: List[int]) -> List[str]:
+        max_heap = [(-score, i) for i, score in enumerate(scores)]
+        heapq.heapify(max_heap)
+        res = []
+        pos = 1
+        while max_heap:
+            _, idx = heapq.heappop(max_heap)
+            if pos == 1:
+                scores[idx] = "Gold Medal"
+            elif pos == 2:
+                scores[idx] = "Silver Medal"
+            elif pos == 3:
+                scores[idx] = "Bronze Medal"
+            else:
+                scores[idx] = str(pos)
+            pos += 1
+        
+        return scores
