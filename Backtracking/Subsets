@@ -1,0 +1,12 @@
+class Solution:
+    def subsets(self, nums):
+        res = []
+        def backtrack(st, temp):
+            res.append(temp[:])
+            for i in range(st, len(nums)):
+                temp.append(nums[i])
+                backtrack(i + 1, temp)
+                temp.pop()
+        
+        backtrack(0, [])
+        return res
