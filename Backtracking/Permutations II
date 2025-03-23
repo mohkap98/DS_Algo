@@ -1,0 +1,27 @@
+class Solution:
+    def permuteUnique(self, nums):
+        nums.sort()
+        res = []
+        sett = set()
+        def backtrack(temp):
+            if len(temp) == len(nums):
+                res.append(temp[:])
+                return 
+
+            for i in range(len(nums)):
+                if i > 0 and nums[i] == nums[i-1] and i-1 not in sett:
+                    continue
+                if i in sett:
+                    continue
+                temp.append(nums[i])
+                sett.add(i)
+                backtrack(temp)
+                temp.pop()
+                sett.remove(i)
+        
+        backtrack([])
+        return res
+            
+
+
+       
