@@ -1,0 +1,18 @@
+class Solution:
+    def combinationSum3(self, k: int, n: int):
+        res = []
+
+        def backtrack(st, curr_sum, temp):
+            if curr_sum >= n or len(temp) >= k:
+                if curr_sum == n and len(temp) == k:
+                    res.append(temp[:])
+                return
+            
+            for i in range(st, 10):
+                temp.append(i)
+                backtrack(i+1, curr_sum + i, temp)
+                temp.pop()
+        
+        backtrack(1, 0, [])
+        return res
+
