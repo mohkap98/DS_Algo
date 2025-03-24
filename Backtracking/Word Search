@@ -1,0 +1,23 @@
+class Solution:
+    def exist(self, board, word: str) -> bool:
+        def dfs(r,c,i):
+            # base case 
+            if i >= len(word):
+                return True
+            seen.add((r, c))
+            directs = [[0,1],[1,0],[0,-1],[-1,0]]
+            for dr, dc in directs:
+                row = r + dr
+                col = c + dc
+                if 0 <= row < m and 0 <= col < n and (row, col) not in seen and board[row][col] == word[i]:
+                    if dfs(row, col, i+1):
+                        return True
+                    seen.remove((row, col))
+            return False
+        m, n = len(board), len(board[0])
+        for i in range(m):
+            for j in range(n):
+                seen = set()
+                if board[i][j] == word[0] and dfs(i,j,1):
+                    return True
+        return False
