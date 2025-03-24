@@ -1,0 +1,46 @@
+class Solution:
+    def generateParenthesis(self, n: int):
+        res = []
+        def is_valid(combination):
+            cnt = 0
+            for ch in combination:
+                cnt = cnt + 1 if ch == '(' else cnt - 1
+                if cnt < 0:
+                    return False
+            return cnt == 0    
+        def recurse(temp):
+            if len(temp) == 2*n:
+                if is_valid(temp):
+                    res.append("".join(temp[:]))
+                return 
+            
+            temp.append('(')
+            recurse(temp)
+            temp.pop()
+            temp.append(')')
+            recurse(temp)
+            temp.pop()
+            
+        recurse([])
+        return res
+        
+
+class Solution:
+    def generateParenthesis(self, n: int):
+        res = []
+        def recurse(opn, clse, temp):
+            if opn == clse == n:
+                res.append("".join(temp[:]))
+                return
+
+            if opn < n:
+                temp.append('(')
+                recurse(opn + 1, clse, temp)
+                temp.pop()
+
+            if clse < opn:
+                temp.append(')')
+                recurse(opn, clse + 1, temp)        
+                temp.pop()
+        recurse(0,0,[])
+        return res   
