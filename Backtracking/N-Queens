@@ -1,0 +1,39 @@
+class Solution:
+    def solveNQueens(self, n: int):
+        # create a 2D board
+        board = [['.' for _ in range(n)] for _ in range(n)]
+        res = []
+        def is_safe(r,c):
+            # vertical safety 
+            for i in range(r):
+                if board[i][c] == 'Q':
+                    return False
+        
+            # diagonal safety -> left
+            for i,j in zip(range(r-1, -1, -1), range(c-1, -1, -1)):
+                    if board[i][j] == 'Q':
+                        return False
+            
+            # right 
+            for i,j in zip(range(r-1, -1, -1), range(c+1, n)):
+                    if board[i][j] == 'Q':
+                        return False
+            
+            return True            
+
+        # start assigning queens 
+        def assignQueens(r):
+
+            # all queens are assigned
+            if r >= n:
+                copy = ["".join(i) for i in board]
+                res.append(copy)
+                return            
+            for c in range(n):
+                if is_safe(r,c):
+                    board[r][c] = 'Q'
+                    assignQueens(r+1)
+                    board[r][c] = '.'
+        
+        assignQueens(0)
+        return res
