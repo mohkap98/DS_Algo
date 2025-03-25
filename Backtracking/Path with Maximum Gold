@@ -1,0 +1,28 @@
+from typing import List
+
+class Solution:
+    def getMaximumGold(self, grid: List[List[int]]) -> int:
+        def DFS(r, c, gold):
+            seen.add((r, c))  # Mark cell as visited
+            gold += grid[r][c]
+            max_gold = gold  # Store local max
+            
+            directs = [[0, 1], [1, 0], [-1, 0], [0, -1]]
+            for dr, dc in directs:
+                row, col = r + dr, c + dc
+                if 0 <= row < m and 0 <= col < n and grid[row][col] != 0 and (row, col) not in seen:
+                    max_gold = max(max_gold, DFS(row, col, gold))  # Track max gold
+             
+            seen.remove((r, c))  # Backtrack
+            return max_gold  # Return best path's gold
+
+        self.max_gold = 0
+        m, n = len(grid), len(grid[0])
+        
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] != 0:
+                    seen = set()  # New set for each DFS call
+                    self.max_gold = max(self.max_gold, DFS(i, j, 0))
+        
+        return self.max_gold
