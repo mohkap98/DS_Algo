@@ -1,0 +1,18 @@
+
+class Solution:
+    def partition(self, s: str):
+        res = []
+        def is_palin(st):
+            return st == st[::-1]
+
+        def backtrack(asf, rem):
+            if not rem:
+                res.append(asf)
+                return
+            
+            for i in range(1, len(rem)+1):
+                if is_palin(rem[:i]):
+                    backtrack(asf + [rem[:i]], rem[i:])
+
+        backtrack([], s)
+        return res
