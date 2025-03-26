@@ -1,0 +1,37 @@
+class Solution:
+    def maxScoreWords(self, words, letters, score):
+        letter_cnt = Counter(letters)
+
+        def getScore(word):
+            res = 0
+            for ch in word:
+                res += score[ord(ch) - ord('a')]
+            return res
+        
+        def can_form_word(word, letter_cnt):
+            word_cnt = Counter(word)
+            for ch in word:
+                if word_cnt[ch] > letter_cnt[ch]:
+                    return False
+            return True
+        
+        def recurse(i):
+            if i == len(words):
+                return 0
+            
+            # exclude the word
+            res = recurse(i+1)
+            
+            # include the word
+            if can_form_word(words[i], letter_cnt):
+                for ch in words[i]:
+                    letter_cnt[ch] -=1
+                    
+                res = max(res, getScore(words[i]) + recurse(i+1))
+                
+                for ch in words[i]:
+                    letter_cnt[ch] +=1
+            
+            return res
+        
+        return recurse(0)
