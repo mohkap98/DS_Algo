@@ -1,0 +1,17 @@
+class Solution:
+    def letterCasePermutation(self, s: str) -> List[str]:
+        res = []
+
+        def backtrack(temp, i):
+            if len(temp) == len(s):
+                res.append(temp)
+                return
+            
+            if s[i].isalpha():
+                backtrack(temp + s[i].lower(), i+1)
+                backtrack(temp + s[i].upper(), i+1)
+            else:
+                backtrack(temp + s[i], i+1)
+        
+        backtrack("", 0)
+        return res
