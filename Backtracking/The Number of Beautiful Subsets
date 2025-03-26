@@ -1,0 +1,27 @@
+class Solution:
+    def beautifulSubsets(self, nums: List[int], k: int) -> int:
+        subsets = []
+        def generateSubsets(i, temp):
+            if i >= len(nums):
+                subsets.append(temp[:])
+                return 
+            
+            temp.append(nums[i])
+            generateSubsets(i+1, temp)
+            temp.pop()
+            generateSubsets(i+1, temp)
+        
+        generateSubsets(0, [])
+        ans = 0
+        for subset in subsets:
+            if not subset:
+                continue
+            is_bs = True
+            used = set(subset)     
+            for num in subset:
+                if num - k in used:
+                    is_bs = False
+                    break
+            if is_bs:
+                ans += 1
+        return ans
