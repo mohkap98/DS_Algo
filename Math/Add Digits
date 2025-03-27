@@ -1,0 +1,16 @@
+Tips: 
+• Any number which is divisible by 9 has the sum of digits adding up to 9 always.
+• Therefore, the digital root for any number divisible by 9 is always 9.
+• The digital root (ans) for 0 is always 0.
+• For any number that isn't 0 and isn't divisible by 9, the digital root (ans) will always be n % 9, where n is the given number.
+
+
+class Solution:
+    def addDigits(self, num: int) -> int:
+        # optimal O(1)
+        if num < 9:
+            return num
+        elif num % 9 == 0:
+            return 9
+        else:
+            return num % 9
