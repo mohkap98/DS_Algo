@@ -1,0 +1,15 @@
+class Solution:
+    def bulbSwitch(self, n: int) -> int:
+        #brute force
+        bulbs = [0] * n 
+        for i in range(n):
+            ptr = i
+            while ptr < n:
+                bulbs[ptr] = 1 if bulbs[ptr] == 0 else 0
+                ptr += (i+1)
+        
+        return sum(bulbs)
+
+class Solution:
+    def bulbSwitch(self, n: int) -> int:
+        return int(sqrt(n))
