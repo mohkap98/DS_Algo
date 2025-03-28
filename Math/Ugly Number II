@@ -1,0 +1,15 @@
+class Solution:
+    def nthUglyNumber(self, n: int) -> int:
+        num = 1
+        min_heap = [num]
+        heapq.heapify(min_heap)
+        seen = set()
+        while n:
+            num = heapq.heappop(min_heap)
+            for i in [2,3,5]:
+                if num * i not in seen:
+                    seen.add(num * i)
+                    heapq.heappush(min_heap, num*i)
+            n-=1
+        return num
+
