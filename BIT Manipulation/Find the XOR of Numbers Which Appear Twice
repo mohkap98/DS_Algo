@@ -1,0 +1,16 @@
+from collections import defaultdict
+from typing import List
+
+class Solution:
+    def duplicateNumbersXOR(self, nums: List[int]) -> int:
+        count = defaultdict(int)
+        xor = 0
+        
+        for num in nums:
+            count[num] += 1
+        
+        for num, freq in count.items():
+            if freq == 2:
+                xor ^= num
+                
+        return xor
