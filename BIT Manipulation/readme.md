@@ -12,11 +12,6 @@ Bit manipulation is a powerful technique used in competitive programming and pro
 - `<<` (Left Shift): `a << n` shifts bits to the left, multiplying by `2^n`.
 - `>>` (Right Shift): `a >> n` shifts bits to the right, dividing by `2^n`.
 
-### 2️⃣ Checking If a Number is Power of Two
-```python
- def isPowerOfTwo(n):
-     return n > 0 and (n & (n - 1)) == 0
-```
 
 ### 3️⃣ Counting Set Bits (Hamming Weight)
 ```python
@@ -27,48 +22,20 @@ Bit manipulation is a powerful technique used in competitive programming and pro
          count += 1
      return count
 ```
+- (1 << n) = 2^n . Generalised : n << x = n * 2^x
 
-### 4️⃣ Finding the Single Non-Repeating Element (XOR Trick)
-```python
- def singleNumber(nums):
-     result = 0
-     for num in nums:
-         result ^= num  # XOR cancels out duplicate numbers
-     return result
-```
+- Similarly, n >> x = n / 2^x
 
-### 5️⃣ Swapping Two Numbers Without Extra Space
-```python
- def swap(a, b):
-     a ^= b
-     b ^= a
-     a ^= b
-     return a, b
-```
+- if ( (x & (1 << i)) == 0 ) , then ith bit of x is set (i.e. 1)
+  This will help you find subset using bit manipulation. 
+  
+- If we subtract a power of 2 number by 1 then all unset bits after the
+  only set bit become set, and the set bit becomes unset.
+  For example for 4 (100) and 16(10000), we get the following after subtracting 1 
+      3 –> 011 
+      15 –> 01111
 
-### 6️⃣ Finding the Rightmost Set Bit (Lowest Set Bit)
-```python
- def lowestSetBit(n):
-     return n & -n  # Isolates the lowest set bit
-```
-
-### 7️⃣ Bitmasking for Subset Generation
-```python
- def generateSubsets(arr):
-     subsets = []
-     n = len(arr)
-     for mask in range(1 << n):
-         subset = [arr[i] for i in range(n) if mask & (1 << i)]
-         subsets.append(subset)
-     return subsets
-```
-
-### 8️⃣ Checking If Two Numbers Have Opposite Signs
-```python
- def oppositeSigns(x, y):
-     return (x ^ y) < 0
-```
-
+   So, if( (n&(n-1)) == 0) - n is even
 ## 🎯 Important LeetCode Problems on Bit Manipulation
 1. **[Single Number](https://leetcode.com/problems/single-number/)** - XOR trick
 2. **[Power of Two](https://leetcode.com/problems/power-of-two/)** - Checking if `n & (n-1) == 0`
