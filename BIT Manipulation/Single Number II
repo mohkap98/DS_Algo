@@ -1,0 +1,15 @@
+class Solution:
+    def singleNumber(self, nums) -> int:
+        res = 0
+        for bit in range(0, 32):
+            zeroes = ones = 0
+            for num in nums:
+                if (num & (1<<bit)):
+                    ones += 1
+                else:
+                    zeroes += 1
+            if ones % 3 == 1:
+                res = res + (1<<bit)
+            if res >= 1<<31:
+                res -= (1<<32)
+        return res
