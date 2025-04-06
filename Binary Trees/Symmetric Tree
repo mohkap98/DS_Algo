@@ -1,0 +1,16 @@
+
+class Solution:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        if not root or (not root.left and not root.right):
+            return True
+        
+        def DFS(curr1, curr2):
+            if not curr1 and not curr2:
+                return True
+            if not curr1 or not curr2:
+                return False
+            if curr1.val != curr2.val:
+                return False
+            return DFS(curr1.left, curr2.right) and DFS(curr1.right, curr2.left)
+        
+        return DFS(root.left, root.right)
