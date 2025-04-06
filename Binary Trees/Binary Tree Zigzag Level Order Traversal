@@ -1,0 +1,24 @@
+class Solution:
+    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root:
+            return []
+        ans = []
+        def BFS(curr):
+            flag = True
+            dq = deque()
+            dq.append([curr])
+            while dq:
+                nodes = dq.popleft()
+                ans.append([node.val for node in (nodes if flag else nodes[::-1])])
+                
+                nxt_lvl = []
+                for node in nodes:
+                    if node.left:
+                        nxt_lvl.append(node.left)
+                    if node.right:
+                        nxt_lvl.append(node.right)
+                if nxt_lvl:
+                    dq.append(nxt_lvl)
+                flag = not flag
+        BFS(root)
+        return ans
