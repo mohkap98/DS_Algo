@@ -1,0 +1,16 @@
+class Solution:
+    def bottomView(self, root):
+        # code here
+        res = []
+        bottom_map = dict() 
+        def DFS(curr, x, y):
+            if not curr:
+                return 
+            DFS(curr.left, x-1, y+1)
+            if x not in bottom_map or y >= bottom_map[x][0]:
+                bottom_map[x] = (y, curr.data)
+            DFS(curr.right, x+1, y+1)
+        DFS(root, 0,0)
+        for key in sorted(bottom_map.keys()):
+            res.append(bottom_map[key][1])
+        return res
