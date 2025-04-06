@@ -1,0 +1,18 @@
+class Solution:
+    def vertical_order(self, root: TreeNode) -> List[List[int]]:
+        res = []
+        mapp = defaultdict(lambda : defaultdict(list))
+        def DFS(x, y, curr):
+            if not curr:
+                return 
+            mapp[x][y].append(curr.val)
+            DFS(x-1, y+1, curr.left)
+            DFS(x+1, y+1, curr.right)
+        
+        DFS(0,0,root)
+        for x in sorted(mapp.keys()):
+            col = []
+            for y in sorted(mapp[x].keys()):
+                col.extend(mapp[x][y])
+            res.append(col)
+        return res
