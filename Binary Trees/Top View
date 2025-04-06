@@ -1,0 +1,15 @@
+def topView(self,root):
+        # code here
+        res = []
+        top_map = dict() 
+        def DFS(curr, x, y):
+            if not curr:
+                return 
+            DFS(curr.left, x-1, y+1)
+            if x not in top_map or y < top_map[x][0]:
+                top_map[x] = (y, curr.data)
+            DFS(curr.right, x+1, y+1)
+        DFS(root, 0,0)
+        for key in sorted(top_map.keys()):
+            res.append(top_map[key][1])
+        return res
