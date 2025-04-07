@@ -1,0 +1,35 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def maxLevelSum(self, root: Optional[TreeNode]) -> int:
+        dq = deque()
+        dq.append(([root], 1))
+        max_sum = -inf
+        max_level = 1
+        while dq:
+            level_sum = 0
+            nodes, level = dq.popleft()
+            next_level = []
+            for node in nodes:
+                level_sum += node.val
+                if node.left:
+                    next_level.append(node.left)
+                if node.right:
+                    next_level.append(node.right)
+            
+            if next_level:
+                dq.append((next_level, level + 1))
+            
+            if level_sum > max_sum:
+                max_sum = level_sum
+                max_level = level
+        return max_level
+
+
+
+
+Maximum Level Sum of a Binary Tree
