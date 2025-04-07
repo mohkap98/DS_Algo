@@ -1,0 +1,30 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def mergeTrees(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root2:
+            return root1
+        if not root1:
+            return root2
+            
+        def merge(curr1, curr2):
+            if not curr1 and not curr2:
+                return None
+            if curr1 and not curr2:
+                return curr1
+
+            if curr1 and curr2:
+                curr2.val += curr1.val
+                lc = merge(curr1.left, curr2.left)
+                if lc:
+                    curr2.left = lc
+
+                rc = merge(curr1.right, curr2.right)
+                if rc:
+                    curr2.right = rc
+        merge(root1, root2)
+        return root2
