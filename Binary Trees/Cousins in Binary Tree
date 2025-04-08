@@ -1,0 +1,41 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isCousins(self, root: Optional[TreeNode], x: int, y: int) -> bool:
+        depth_x, depth_y = 0,0
+        parent_x, parent_y = None, None
+
+        def postorder(curr, d):
+            if not curr:
+                return (None, d)
+            
+            lc = postorder(curr.left, d+1)
+            rc = postorder(curr.right, d+1)
+
+            nonlocal depth_x, depth_y, parent_x, parent_y
+            if lc[0] and lc[0].val == x:
+                depth_x = lc[1]
+                parent_x = curr.val
+            
+            if lc[0] and lc[0].val == y:
+                depth_y = lc[1]
+                parent_y = curr.val
+            
+            if rc[0] and rc[0].val == x:
+                depth_x = rc[1]
+                parent_x = curr.val
+            
+            if rc[0] and rc[0].val == y:
+                depth_y = rc[1]
+                parent_y = curr.val
+            
+            return (curr, d)
+        
+        postorder(root, 0)
+        return depth_x == depth_y and parent_x != parent_y            
+
+           
