@@ -1,0 +1,52 @@
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.word = None  # will store full word at the end node
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, word):
+        curr = self.root
+        for ch in word:
+            if ch not in curr.children:
+                curr.children[ch] = TrieNode()
+            curr = curr.children[ch]
+        curr.word = word  # mark end of a word
+
+
+class Solution:
+    def findWords(self, board, words):
+        m, n = len(board), len(board[0])
+        trie = Trie()
+        for word in words:
+            trie.insert(word)
+
+        res = set()
+        root = trie.root
+        visited = [[False]*n for _ in range(m)]
+
+        def dfs(r, c, node):
+            ch = board[r][c]
+            if ch not in node.children:
+                return
+            
+            visited[r][c] = True
+            next_node = node.children[ch]
+
+            if next_node.word:
+                res.add(next_node.word)  # found full word
+
+            for dr, dc in [(-1,0), (1,0), (0,-1), (0,1)]:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < m and 0 <= nc < n and not visited[nr][nc]:
+                    dfs(nr, nc, next_node)
+
+            visited[r][c] = False  # backtrack
+
+        for i in range(m):
+            for j in range(n):
+                dfs(i, j, root)
+
+        return list(res)
