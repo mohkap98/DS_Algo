@@ -1,0 +1,25 @@
+class Solution:
+    def findShortestSubArray(self, nums: List[int]) -> int:
+        # sliding window O(n)
+        deg_nums = max(Counter(nums).values())
+        if deg_nums <= 1:
+            return 1
+        min_l = len(nums)
+        freq = defaultdict(int)
+        l,r = 0,1
+        freq[nums[l]] += 1
+        while l < r and r < len(nums):
+            freq[nums[r]] += 1
+            deg_sub_nums = max(freq.values())
+            while deg_sub_nums >= deg_nums:
+                min_l = min(min_l, r-l+1)
+                freq[nums[l]] -= 1
+                if not freq[nums[l]]:
+                    del freq[nums[l]] 
+                l+=1
+                deg_sub_nums = max(freq.values())   
+            r+=1
+        
+        return min_l
+
+        
