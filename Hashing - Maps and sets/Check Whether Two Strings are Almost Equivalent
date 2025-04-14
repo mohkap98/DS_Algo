@@ -1,0 +1,12 @@
+class Solution:
+    def checkAlmostEquivalent(self, word1: str, word2: str) -> bool:
+        freq1 = Counter(word1)
+        freq2 = Counter(word2)
+        
+        for i in range(26):
+            ch = chr(ord('a') + i) 
+            cnt1 = freq1[ch] if ch in freq1 else 0
+            cnt2 = freq2[ch] if ch in freq2 else 0
+            if abs(cnt2 - cnt1) > 3:
+                return False
+        return True
