@@ -1,0 +1,28 @@
+class Solution:
+    def addOperators(self, num: str, target: int) -> List[str]:
+        ans = []
+        n = len(num)
+
+        def DFS(i, sofar, res, prev):
+            if i == n:
+                if res == target:
+                    ans.append("".join(sofar))
+                return
+            
+            for j in range(i, n):
+                # skip leading zeros
+                if num[i] == '0' and j > i:
+                    continue
+
+                cand_str = num[i:j+1]
+                cand = int(cand_str)
+
+                if not sofar:
+                    DFS(j+1, [cand_str], cand, cand)
+                else:
+                    DFS(j+1, sofar + ['+'] + [cand_str], res + cand, cand)
+                    DFS(j+1, sofar + ['-'] + [cand_str], res - cand, -cand)
+                    DFS(j+1, sofar + ['*'] + [cand_str], res - prev + prev * cand, prev * cand)
+
+        DFS(0, [], 0, 0)
+        return ans
