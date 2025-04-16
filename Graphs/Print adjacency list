@@ -1,0 +1,15 @@
+from typing import List
+from collections import defaultdict
+
+class Solution:
+    def printGraph(self, V: int, edges: List[List[int]]) -> List[List[int]]:
+        adj_list = defaultdict(list)
+        for u, v in edges:
+            adj_list[u].append(v)
+            adj_list[v].append(u)  # undirected graph
+
+        ans = []
+        for i in range(V):
+            ans.append(adj_list[i])  # will be [] if i has no edges
+
+        return ans
