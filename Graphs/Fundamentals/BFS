@@ -1,0 +1,17 @@
+from collections import deque
+class Solution:
+    # Function to return Breadth First Search Traversal of given graph.
+    def bfs(self, adj):
+        # code here
+        dq = deque([0])
+        seen = set([0])
+        output = []
+        while dq:
+            node = dq.popleft()
+            output.append(node)
+            for nei_node in adj[node]:
+                if nei_node not in seen:
+                    dq.append(nei_node)
+                    seen.add(nei_node)
+        
+        return output
