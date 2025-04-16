@@ -1,0 +1,14 @@
+def dfs(self, adj):
+    stack = [0]
+    res = []
+    seen = set([0])
+    
+    while stack:
+        node = stack.pop()
+        res.append(node)
+        for nei_node in reversed(adj[node]):
+            if nei_node not in seen:
+                seen.add(nei_node)
+                stack.append(nei_node)
+    
+    return res
