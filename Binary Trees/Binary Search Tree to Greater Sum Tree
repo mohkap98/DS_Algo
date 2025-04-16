@@ -1,0 +1,38 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def bstToGst(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        nodes = []
+        n = len(nodes)
+        def inorder(cur):
+            if not cur:
+                return 
+            inorder(cur.left)
+            nodes.append(cur.val)
+            inorder(cur.right)
+        
+        inorder(root)
+
+        node_mapp = dict()
+        node_mapp[nodes[n-1]] = nodes[n-1] 
+        for i in range(len(nodes) - 2, -1, -1):
+            temp = nodes[i]
+            nodes[i] += nodes[i+1]
+            node_mapp[temp] = nodes[i]
+        
+        def inorder(cur):
+            if not cur:
+                return 
+            inorder(cur.left)
+            if cur.val in node_mapp:
+                cur.val = node_mapp[cur.val] 
+            inorder(cur.right)
+        inorder(root)
+        return root
+        
+
+        
