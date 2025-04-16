@@ -1,0 +1,31 @@
+class Solution:
+    def findCircleNum(self, isConnected: List[List[int]]) -> int:
+        adj = self.createADJ(isConnected)
+        provinces = 0 
+        v = len(isConnected)
+        seen = set()
+        def DFS(node):
+            for nei_node in adj[node]:
+                if nei_node not in seen:
+                    seen.add(nei_node)
+                    DFS(nei_node)
+        
+        for node in range(v):
+            if node not in seen:
+                seen.add(node)
+                DFS(node)
+                provinces += 1
+        
+        return provinces
+
+    def createADJ(self, isConnected):
+        v = len(isConnected)
+        adj = defaultdict(list)
+        for i in range(v):
+            for j in range(v):
+                if i != j and isConnected[i][j]:
+                    adj[i].append(j)
+        return adj
+
+
+
