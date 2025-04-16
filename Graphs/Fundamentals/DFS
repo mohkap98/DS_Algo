@@ -1,0 +1,16 @@
+class Solution:
+    
+    def dfs(self, adj):
+        # code here
+        seen = set()
+        output = []
+        
+        def DFS(node):
+            seen.add(node)
+            output.append(node)
+            for nei_node in adj[node]:
+                if nei_node not in seen:
+                    DFS(nei_node)
+        
+        DFS(0)
+        return output
