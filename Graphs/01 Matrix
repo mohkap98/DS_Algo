@@ -1,0 +1,24 @@
+class Solution:
+    def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
+        # multi source BFS from zeroes 
+        dq = deque()
+        m,n = len(mat), len(mat[0])
+
+        for i in range(m):
+            for j in range(n):
+                if mat[i][j] == 0:
+                    dq.append((i,j,0))
+                else:
+                    mat[i][j] = inf
+
+        while dq:
+            i,j,dist = dq.popleft()
+            for r,c in [(i,j+1),(i+1,j),(i,j-1),(i-1,j)]:
+                if 0 <= r < m and 0 <= c < n:
+                    if mat[r][c] != 0 and dist < mat[r][c]:
+                        mat[r][c] = min(mat[r][c], dist + 1)
+                        dq.append((r,c,dist+1))
+        
+        return mat
+                    
+
