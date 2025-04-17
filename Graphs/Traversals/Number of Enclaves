@@ -1,0 +1,33 @@
+class Solution:
+    def numEnclaves(self, grid: List[List[int]]) -> int:
+        land_cells = 0
+        m,n = len(grid), len(grid[0])
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 1:
+                    land_cells += 1
+        
+        walked_cells = 0
+        def DFS(r,c):
+            nonlocal walked_cells
+            if r < 0 or r >= m or c < 0 or c >= n or (r,c) in seen or not grid[r][c]:
+                return 
+            seen.add((r,c))
+            walked_cells += 1
+            
+            DFS(r+1, c)
+            DFS(r-1, c)
+            DFS(r, c+1)
+            DFS(r, c-1)
+        
+        seen = set()
+        for i in range(m):
+            for j in range(n):
+                if (i in [0,m-1] or j in [0,n-1]) and (i,j) not in seen and grid[i][j] == 1:
+                    DFS(i,j)
+        
+        return land_cells - walked_cells
+
+
+
+        
