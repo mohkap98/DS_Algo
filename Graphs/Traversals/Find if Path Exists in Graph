@@ -1,0 +1,23 @@
+class Solution:
+    def validPath(self, n: int, edges: List[List[int]], source: int, destination: int) -> bool:
+        if source == destination:
+            return True
+        d = defaultdict(list)
+        for u,v in edges:
+            d[u].append(v)
+            d[v].append(u)
+        
+        seen = set()
+        self.foundDest = False
+        def DFS(node):
+            seen.add(node)
+            for nei_node in d[node]:
+                if nei_node == destination:
+                    self.foundDest = True
+                    return
+                if nei_node not in seen:
+                    DFS(nei_node)
+
+        DFS(source)
+        return self.foundDest
+        
