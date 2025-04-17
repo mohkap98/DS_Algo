@@ -1,0 +1,53 @@
+DFS TLE  
+
+class Solution:
+    def ladderLength(self, begin: str, end: str, words: List[str]) -> int:
+        if end not in set(words):
+            return 0
+        self.changes = inf
+        seen = set()
+        words_set = set(words)
+        def DFS(cur, changes):
+            if cur == end:
+                self.changes = min(self.changes, changes)
+                return
+            for word in words_set:
+                if word not in seen:
+                    diff = 0 
+                    for a,b in zip(cur, word):
+                        if a!=b:
+                            diff += 1
+                    
+                    if diff == 1:
+                        seen.add(word)
+                        DFS(word, changes + 1)
+                        seen.remove(word)
+           
+        DFS(begin, 1)
+        return self.changes if self.changes != inf else 0
+
+  BFS 
+class Solution:
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        # traditional BFS 
+        wordSet = set(wordList)
+        if endWord not in wordSet:
+            return 0
+        
+        dq = deque([(beginWord, 1)])
+        seen = set()
+
+        while dq:
+            word, changes = dq.popleft()
+            if word == endWord:
+                return changes
+            seen.add(word)
+        
+            for i in range(len(word)):
+                for c in 'abcdefghijklmnopqrstuvwxyz':
+                    newWord = word[:i] + c + word[i + 1:]
+                    if newWord in wordSet and newWord not in seen:
+                        dq.append((newWord, changes + 1))
+                        wordSet.remove(newWord)  # Mark as visited
+
+        return 0
