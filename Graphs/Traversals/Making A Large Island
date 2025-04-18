@@ -1,0 +1,35 @@
+class Solution:
+    def largestIsland(self, grid: List[List[int]]) -> int:
+        def DFS(i,j):
+            if i < 0 or j < 0 or i >= n or j >= n or grid[i][j] != 1 or (i,j) in seen:
+                return 0
+            seen.add((i,j))
+            grid[i][j] = island_id  # 🔥 Mark this cell with the current island ID
+            d = DFS(i+1, j)
+            r = DFS(i, j+1)
+            u = DFS(i-1, j)
+            l = DFS(i, j-1)
+            return l + r + u + d + 1  # ← changed grid[i][j] to 1 for correctness
+
+        n = len(grid)
+        areas = dict()
+        island_id = 2
+        for i in range(n):
+            for j in range(n):
+                if grid[i][j] == 1:
+                    seen = set()
+                    areas[island_id] = DFS(i,j)
+                    island_id += 1
+        
+        max_area = max(areas.values(), default = 0)
+        for i in range(n):
+            for j in range(n):
+                if grid[i][j] == 0:
+                    neighbor_ids = set()
+                    for ni, nj in [(i+1,j), (i,j+1), (i-1,j), (i,j-1)]:
+                        if 0 <= ni < n and 0 <= nj < n and grid[ni][nj] > 1:
+                            neighbor_ids.add(grid[ni][nj])
+                    area = 1 + sum(areas[k] for k in neighbor_ids)
+                    max_area = max(max_area, area)
+        
+        return max_area
