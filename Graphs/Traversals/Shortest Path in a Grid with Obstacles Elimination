@@ -1,0 +1,28 @@
+class Solution:
+    def shortestPath(self, grid: List[List[int]], k: int) -> int:
+        m, n = len(grid), len(grid[0])
+        dq = deque([((0, 0), 0, k)])  # (position, distance, remaining obstacles)
+        seen = set()  # Tracks (i, j, remaining_obstacles) to avoid revisiting
+        seen.add((0, 0, k))
+
+        while dq:
+            (i, j), dist, obs = dq.popleft()
+
+            # If we reach the target (m-1, n-1)
+            if (i, j) == (m-1, n-1):
+                return dist
+
+            # Explore all 4 neighbors
+            for ni, nj in [(i+1, j), (i, j+1), (i-1, j), (i, j-1)]:
+                if 0 <= ni < m and 0 <= nj < n:
+                    if grid[ni][nj] == 1:  # There's an obstacle
+                        if obs > 0 and (ni, nj, obs - 1) not in seen:
+                            dq.append(((ni, nj), dist + 1, obs - 1))
+                            seen.add((ni, nj, obs - 1))
+                    else:  # No obstacle
+                        if (ni, nj, obs) not in seen:
+                            dq.append(((ni, nj), dist + 1, obs))
+                            seen.add((ni, nj, obs))
+
+        # If no valid path is found
+        return -1
