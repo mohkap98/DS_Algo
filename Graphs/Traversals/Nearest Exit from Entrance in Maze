@@ -1,0 +1,22 @@
+class Solution:
+    def nearestExit(self, maze: List[List[str]], entrance: List[int]) -> int:
+        
+        m,n = len(maze), len(maze[0])
+        dq = deque([(entrance[0], entrance[1], 0)])
+        seen = set()
+        seen.add((entrance[0], entrance[1]))
+        directs = [(1,0),(0,1),(-1,0),(0,-1)]
+        while dq:
+            r,c,dist = dq.popleft()
+            if [r,c] != entrance and (r==0 or c==0 or r==m-1 or c==n-1):
+                return dist
+            
+            for dr, dc in directs:
+                row = r+dr
+                col = c+dc
+
+                if 0 <= row < m and 0 <= col < n and maze[row][col] != '+' and (row, col) not in seen:
+                    seen.add((row, col))
+                    dq.append((row, col, dist + 1))
+            
+        return -1
