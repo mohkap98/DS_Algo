@@ -1,0 +1,29 @@
+from collections import defaultdict, deque
+
+class Solution:
+    def topoSort(self, V, edges):
+        adj = defaultdict(list)
+        indegree = [0] * V
+
+        # Build adjacency list and calculate indegrees
+        for u, v in edges:
+            adj[u].append(v)
+            indegree[v] += 1
+
+        # Queue for nodes with 0 indegree
+        dq = deque([i for i in range(V) if indegree[i] == 0])
+        topo_order = []
+
+        while dq:
+            node = dq.popleft()
+            topo_order.append(node)
+            for nei in adj[node]:
+                indegree[nei] -= 1
+                if indegree[nei] == 0:
+                    dq.append(nei)
+
+        # Check for cycle (i.e., not all nodes were processed)
+        if len(topo_order) != V:
+            return []  # or raise an error indicating a cycle
+
+        return topo_order
