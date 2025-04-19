@@ -1,0 +1,26 @@
+from typing import List
+from collections import deque
+
+class Solution:
+    def isCycle(self, V: int, adj: List[List[int]]) -> bool:
+        seen = set()
+
+        def bfs(start, parent):
+            dq = deque([(start, parent)])
+            seen.add(start)
+
+            while dq:
+                node, parent = dq.popleft()
+                for nei in adj[node]:
+                    if nei not in seen:
+                        seen.add(nei)
+                        dq.append((nei, node))
+                    elif nei != parent:
+                        return True  # Cycle found
+            return False
+
+        for i in range(V):
+            if i not in seen:
+                if bfs(i, -1):
+                    return True
+        return False
