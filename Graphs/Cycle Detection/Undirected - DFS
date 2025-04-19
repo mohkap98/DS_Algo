@@ -1,0 +1,27 @@
+from collections import defaultdict
+
+class Solution:
+    def isCycle(self, V, edges):
+        adj = defaultdict(list)
+        for u, v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+
+        visited = set()
+
+        def DFS(node, parent):
+            visited.add(node)
+            for nei in adj[node]:
+                if nei not in visited:
+                    if DFS(nei, node):  # Return value needed!
+                        return True
+                elif nei != parent:
+                    return True
+            return False
+
+        # Handle disconnected components
+        for i in range(V):
+            if i not in visited:
+                if DFS(i, -1):
+                    return True
+        return False
