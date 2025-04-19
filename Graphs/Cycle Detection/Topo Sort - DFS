@@ -1,0 +1,23 @@
+from collections import defaultdict
+
+class Solution:
+    def topoSort(self, V, edges):
+        adj = defaultdict(list)
+        for u, v in edges:
+            adj[u].append(v)
+
+        seen = set()
+        stack = []
+
+        def DFS(node):
+            seen.add(node)
+            for nei in adj[node]:
+                if nei not in seen:
+                    DFS(nei)
+            stack.append(node)
+
+        for i in range(V):
+            if i not in seen:
+                DFS(i)
+
+        return stack[::-1]
