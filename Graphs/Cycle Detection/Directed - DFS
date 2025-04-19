@@ -1,0 +1,24 @@
+from collections import defaultdict
+class Solution:
+    def isCycle(self, V, edges):
+        # code here
+        adj = defaultdict(list)
+        for u,v in edges:
+            adj[u].append(v)
+        
+        seen = set()
+        def DFS(node):
+            seen.add(node)
+            for nei in adj[node]:
+                if nei not in seen:
+                    if DFS(nei):
+                        return True
+                else:
+                    return True
+            seen.remove(node)
+            return False
+        
+        for i in range(V):
+            if i not in seen and DFS(i):
+                return True
+        return False
