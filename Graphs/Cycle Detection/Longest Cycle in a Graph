@@ -1,0 +1,25 @@
+class Solution:
+    def longestCycle(self, edges: List[int]) -> int:
+        seen = set()
+        max_cycle = -1
+
+        def DFS(node, index_map, depth):
+            if node == -1:
+                return -1
+            if node in index_map:
+                return depth - index_map[node]  # length of the cycle
+            if node in seen:
+                return -1
+
+            seen.add(node)
+            index_map[node] = depth
+            result = DFS(edges[node], index_map, depth + 1)
+            index_map.pop(node)  # backtrack
+            return result
+
+        for i in range(len(edges)):
+            if i not in seen:
+                cycle_len = DFS(i, {}, 0)
+                max_cycle = max(max_cycle, cycle_len)
+
+        return max_cycle
