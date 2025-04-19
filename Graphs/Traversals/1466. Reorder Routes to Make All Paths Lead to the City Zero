@@ -1,0 +1,23 @@
+class Solution:
+    def minReorder(self, n: int, connections: List[List[int]]) -> int:
+        mapp = defaultdict(list)
+        given_connections = set()
+        for start,end in connections:
+            mapp[start].append(end)
+            mapp[end].append(start)
+            given_connections.add((start, end))
+        
+        seen = set()
+        flips = 0
+        def DFS(node):
+            nonlocal flips
+            seen.add(node)
+            for nei_node in mapp[node]:
+                if nei_node not in seen:
+                    if (node, nei_node) in given_connections:
+                        flips += 1
+                    DFS(nei_node)
+        DFS(0)
+        return flips
+
+        
