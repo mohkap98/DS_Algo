@@ -1,0 +1,29 @@
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        # topo sort
+        courses = defaultdict(list)
+        for u,v in prerequisites:
+            courses[u].append(v)
+        visited = set()
+        visiting = set()
+        stack = []
+        def topo_DFS(course):
+            if course in visiting:
+                return False
+            if course in visited:
+                return True
+            visited.add(course)
+            visiting.add(course)
+            for nei_course in courses[course]:
+                if not topo_DFS(nei_course):
+                    return False
+            stack.append(course)
+            visiting.remove(course)
+            return True
+
+        for i in range(numCourses):
+            if i not in visited and not topo_DFS(i):
+                return []
+        return stack
+
+       
