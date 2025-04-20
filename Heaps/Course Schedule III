@@ -1,0 +1,14 @@
+class Solution:
+    def scheduleCourse(self, courses: List[List[int]]) -> int:
+        courses.sort(key = lambda x : x[1])
+        max_heap = []
+        days = 0
+        
+        for duration, lastday in courses:
+            days += duration
+            heapq.heappush(max_heap, -duration) 
+            if days > lastday:
+                max_duration = -heapq.heappop(max_heap)
+                days -= max_duration
+        
+        return len(max_heap)
