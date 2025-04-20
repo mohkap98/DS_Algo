@@ -1,0 +1,34 @@
+class Codec:
+    def serialize(self, root):
+        res = []
+
+        def preorder(cur):
+            if not cur:
+                res.append("None")
+                return
+            res.append(str(cur.val))
+            preorder(cur.left)
+            preorder(cur.right)
+
+        preorder(root)
+        return ",".join(res)
+
+    def deserialize(self, data):
+        nodes = data.split(",")
+        self.index = 0
+
+        def buildTree():
+            if self.index >= len(nodes):
+                return None
+            if nodes[self.index] == "None":
+                self.index += 1
+                return None
+
+            val = nodes[self.index]
+            self.index += 1
+            node = TreeNode(int(val))
+            node.left = buildTree()
+            node.right = buildTree()
+            return node
+
+        return buildTree()
