@@ -1,0 +1,26 @@
+from collections import defaultdict
+
+class Solution:
+    def checkIfPrerequisite(self, numCourses: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        graph = defaultdict(list)
+        for u, v in prerequisites:
+            graph[u].append(v)
+
+        memo = {}
+
+        def DFS(u, target):
+            if u == target:
+                return True
+            if (u, target) in memo:
+                return memo[(u, target)]
+            for nei in graph[u]:
+                if DFS(nei, target):
+                    memo[(u, target)] = True
+                    return True
+            memo[(u, target)] = False
+            return False
+
+        result = []
+        for u, v in queries:
+            result.append(DFS(u, v))
+        return result
