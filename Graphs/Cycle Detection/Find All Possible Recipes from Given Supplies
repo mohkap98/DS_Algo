@@ -1,0 +1,25 @@
+from collections import defaultdict, deque
+
+class Solution:
+    def findAllRecipes(self, recipes, ingredients, supplies):
+        # Graph: ingredient -> recipes that need it
+        graph = defaultdict(list)
+        indegree = defaultdict(int)
+        all_items = set(supplies)
+
+        for recipe, ing_list in zip(recipes, ingredients):
+            for ing in ing_list:
+                graph[ing].append(recipe)
+                indegree[recipe] += 1
+
+        q = deque(supplies)
+        res = []
+
+        while q:
+            item = q.popleft()
+            for recipe in graph[item]:
+                indegree[recipe] -= 1
+                if indegree[recipe] == 0:
+                    res.append(recipe)
+                    q.append(recipe)
+        return res
