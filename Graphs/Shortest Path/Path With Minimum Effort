@@ -1,0 +1,22 @@
+class Solution:
+    def minimumEffortPath(self, heights: List[List[int]]) -> int:
+        # using dijkstra algo 
+        m,n = len(heights), len(heights[0])
+        minHeap = [[0,0,0]] # dist, r, c
+        while minHeap:
+            dist,r,c = heapq.heappop(minHeap)
+            if (r,c) == (m-1,n-1):
+                return dist
+            prev = heights[r][c]
+            if heights[r][c] == '#':
+                continue
+            heights[r][c] = '#'
+            for nr,nc in [(r,c+1),(r+1,c),(r,c-1),(r-1,c)]:
+                if 0 <= nr < m and 0 <= nc < n and heights[nr][nc] != '#':
+                    cur = heights[nr][nc]
+                    maxD = max(dist, abs(cur-prev))
+                    heapq.heappush(minHeap, [maxD,nr,nc])
+        return -1
+
+
+        
