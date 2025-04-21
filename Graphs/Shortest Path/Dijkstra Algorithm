@@ -1,0 +1,22 @@
+class Solution:
+    # Returns shortest distances from src to all other vertices
+    def dijkstra(self, V, edges, src):
+        # code here
+        adj = defaultdict(list)
+        for u,v,wt in edges:
+            adj[u].append([wt,v])
+        
+        shortest = [inf] * V
+        minHeap = [[0, src]]
+        seen = set()
+        while minHeap:
+            d1, n1 = heapq.heappop(minHeap)
+            if n1 in seen:
+                continue
+            seen.add(n1)
+            shortest[n1] = d1
+            for d2,n2 in adj[n1]:
+                if n2 not in seen:
+                    heapq.heappush(minHeap, [d1+d2, n2])
+        
+        return shortest
