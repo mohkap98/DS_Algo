@@ -1,0 +1,23 @@
+
+class Solution:
+    def shortestPath(self, adj, src):
+        # code here
+        n = len(adj)
+        result = [-1]*n
+        seen = set()
+        
+        def BFS(node):
+            dq = deque()
+            dq.append((node, 0))
+            seen.add(node)
+            while dq:
+                node, distance = dq.popleft()
+                result[node] = distance
+                distance+=1
+                for nei_node in adj[node]:
+                    if nei_node not in seen:
+                        seen.add(nei_node)
+                        dq.append((nei_node, distance))
+        BFS(src)
+        return result
+                    
