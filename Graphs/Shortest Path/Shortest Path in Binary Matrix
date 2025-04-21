@@ -1,0 +1,21 @@
+class Solution:
+    def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        if grid[0][0] == 1 or grid[n-1][n-1] == 1:
+            return -1
+
+        q = deque([[1, 0, 0]])  # dist, row, col
+        grid[0][0] == '#'
+        while q:
+            dist, r, c = q.popleft()
+            if (r, c) == (n - 1, n - 1):
+                return dist
+            directs = [
+                (r, c + 1), (r + 1, c), (r, c - 1), (r - 1, c),
+                (r + 1, c + 1), (r - 1, c - 1), (r + 1, c - 1), (r - 1, c + 1)
+            ]
+            for nr, nc in directs:
+                if 0 <= nr < n and 0 <= nc < n and grid[nr][nc] == 0:
+                    q.append([dist + 1, nr, nc])
+                    grid[nr][nc] = "#"  
+        return -1
