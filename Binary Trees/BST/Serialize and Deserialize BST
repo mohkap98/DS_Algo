@@ -1,0 +1,41 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Codec:
+    def serialize(self, root: Optional[TreeNode]) -> str:
+        preorder = []
+        def DFS(cur):
+            if not cur:
+                preorder.append("None")
+                return
+            preorder.append(str(cur.val))
+            DFS(cur.left)
+            DFS(cur.right)
+        
+        DFS(root)
+        return ",".join(preorder)
+        
+    def deserialize(self, data: str) -> Optional[TreeNode]:
+        nodes = data.split(',')
+        self.index = 0
+        def buildTree():
+            if self.index >= len(nodes):
+                return None
+            if nodes[self.index] == "None":
+                self.index += 1
+                return None
+
+            val = nodes[self.index]
+            self.index += 1
+            node = TreeNode(int(val))
+            node.left = buildTree()
+            node.right = buildTree()
+            return node
+        return buildTree()
+
+
+
