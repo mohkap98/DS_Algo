@@ -1,6 +1,32 @@
 class Solution:
     # Returns shortest distances from src to all other vertices
     def dijkstra(self, V, edges, src):
+        adj = defaultdict(list)
+        for u, v, wt in edges:
+            adj[u].append((v, wt))  # (neighbor, weight)
+
+        shortest = [inf] * V
+        shortest[src] = 0
+        minHeap = [(0, src)]  # (distance, node)
+
+        while minHeap:
+            d1, n1 = heapq.heappop(minHeap)
+            
+            if d1 > shortest[n1]:
+                continue  # We already found a better path
+
+            for n2, d2 in adj[n1]:
+                if d1 + d2 < shortest[n2]:
+                    shortest[n2] = d1 + d2
+                    heapq.heappush(minHeap, (d1 + d2, n2))
+        
+        return shortest
+
+
+
+class Solution:
+    # Returns shortest distances from src to all other vertices
+    def dijkstra(self, V, edges, src):
         # code here
         adj = defaultdict(list)
         for u,v,wt in edges:
