@@ -1,3 +1,25 @@
+# Bellman Ford
+from collections import defaultdict
+from math import inf
+
+class Solution:
+    def findCheapestPrice(self, n, flights, src, dst, k):
+        prices = [inf] * n
+        prices[src] = 0
+
+        for _ in range(k + 1):
+            temp = prices.copy()
+            for u, v, cost in flights:
+                if prices[u] != inf and prices[u] + cost < temp[v]:
+                    temp[v] = prices[u] + cost
+            prices = temp
+        
+        return -1 if prices[dst] == inf else prices[dst]
+
+
+
+
+
 # Dijkstra Algo
 
 class Solution:
