@@ -1,0 +1,25 @@
+def floyd_warshall(n, graph):
+    # Initialize distance matrix with given weights
+    dist = [[float('inf')] * n for _ in range(n)]
+    
+    # Distance to self is always 0
+    for i in range(n):
+        dist[i][i] = 0
+
+    # Load graph edges into distance matrix
+    for u, v, wt in graph:
+        dist[u][v] = wt
+
+    # Dynamic programming core
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if dist[i][k] + dist[k][j] < dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+
+    # Optional: detect negative weight cycles
+    for i in range(n):
+        if dist[i][i] < 0:
+            return "Negative weight cycle detected"
+
+    return dist
