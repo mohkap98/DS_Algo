@@ -1,37 +1,18 @@
-#User function Template for python3
-from cmath import inf
-class Solution:
-    '''
-    Function to implement Bellman Ford
-    V: nodes in graph
-    edges: adjacency list for the graph
-    src: source vertex
-    '''
-    def bellmanFord(self, V, edges, src):
-        #code here
-        dist = [inf]*V
-        dist[src] = 0
-        for i in range(V-1):
-            for edge in edges:
-                u = edge[0]
-                v = edge[1]
-                wt = edge[2]
-                if dist[u] != inf and dist[u] + wt < dist[v]:
-                    dist[v] = dist[u] + wt
-    
-        # detect -ve cycle 
-    
-        for edge in edges:
-            u = edge[0]
-            v = edge[1]
-            wt = edge[2]
-            if dist[u] != inf and dist[u] + wt < dist[v]:
-                return [-1]
-        
-        for i in range(V):
-            if dist[i] == inf:
-                dist[i] = 100000000
-    
-        
-        # if no cycle 
-        return dist
+from math import inf
+
+def bellman_ford(n, edges, src):
+    dist = [inf] * n
+    dist[src] = 0
+
+    # Step 1: Relax all edges (n - 1) times
+    for i in range(n - 1):
+        for u, v, wt in edges:
+            if dist[u] + wt < dist[v]:
+                dist[v] = dist[u] + wt
+
+    # Step 2: Check for negative weight cycles
+    for u, v, wt in edges:
+        if dist[u] + wt < dist[v]:
+            return "Negative weight cycle detected"
+
+    return dist
