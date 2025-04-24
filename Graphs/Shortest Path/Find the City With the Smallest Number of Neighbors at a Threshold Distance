@@ -1,0 +1,29 @@
+class Solution:
+    def findTheCity(self, n: int, edges: List[List[int]], distanceThreshold: int):
+        adj = defaultdict(list)
+        for u, v, wt in edges:
+            adj[u].append((v, wt))
+            adj[v].append((u, wt))
+
+        def dijkstra(node):
+            heap = [(0, node)] # (dist, node)
+            seen = set()
+            while heap:
+                dist, node = heapq.heappop(heap)
+                if node in seen:
+                    continue
+                seen.add(node)
+                for nei, dist2 in adj[node]:
+                    if dist + dist2 <= distanceThreshold:
+                        heapq.heappush(heap, (dist+dist2, nei))
+            return len(seen) - 1
+
+        res = -1
+        min_count = n
+        for node in range(n):
+            count = dijkstra(node)
+            if count <= min_count:
+                min_count = count 
+                res = node
+
+        return res
