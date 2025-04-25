@@ -1,0 +1,19 @@
+class Solution:
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
+        # prim's
+        heap = [(0,points[0][0], points[0][1])] # (x,y)
+        seen = set()
+        min_dist = 0
+        while heap:
+            dist,x,y = heapq.heappop(heap)
+            if (x,y) in seen:
+                continue
+            min_dist += dist
+            seen.add((x,y))
+            if len(seen) == len(points):
+                return min_dist
+            for px, py in points:
+                if (px, py) not in seen:
+                    new_dist = abs(px - x) + abs(py - y)
+                    heapq.heappush(heap, (new_dist, px, py))
+        return -1
