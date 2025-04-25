@@ -1,0 +1,21 @@
+def prim(n, edges):
+    adj = defaultdict(list)
+    for u, v, wt in edges:
+        adj[u].append((wt, v))
+        adj[v].append((wt, u))
+
+    visited = set()
+    min_heap = [(0, 0)]  # (weight, node)
+    mst_weight = 0
+
+    while min_heap and len(visited) < n:
+        wt, u = heapq.heappop(min_heap)
+        if u in visited:
+            continue
+        visited.add(u)
+        mst_weight += wt
+        for nei_wt, nei in adj[u]:
+            if nei not in visited:
+                heapq.heappush(min_heap, (nei_wt, nei))
+    
+    return mst_weight if len(visited) == n else -1
