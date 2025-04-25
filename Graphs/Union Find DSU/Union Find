@@ -1,0 +1,24 @@
+class UnionFind:
+    def __init__(self, n):
+        self.parent = [i for i in range(n)]
+        self.rank = [0 for _ in range(n)]
+    
+    def union(self, v1, v2):
+        p1 = self.find(v1)
+        p2 = self.find(v2)
+
+        if p1 == p2:
+            return 
+        else:
+            if self.rank[p1] > self.rank[p2]:
+                self.parent[p2] = p1
+            elif self.rank[p2] > self.rank[p1]:
+                self.parent[p1] = p2
+            else:
+                self.parent[p1] = p2
+                self.rank[p2] += 1
+        
+    def find(self, v):
+        while self.parent[v] != v:
+            v = self.parent[v]
+        return v
