@@ -1,0 +1,28 @@
+Brute Force 
+
+class Solution:
+    def maxSubarraySumCircular(self, nums: List[int]) -> int:
+        def rotate_by_one(nums):
+            if not nums:
+                return nums
+    
+            last = nums.pop()  
+            nums.insert(0, last)  
+            return nums
+        
+        def kadanes(nums):
+            max_sum = nums[0]       # Final answer
+            current_sum = nums[0]   # Current running sum
+
+            for num in nums[1:]:
+                current_sum = max(num, current_sum + num)
+                max_sum = max(max_sum, current_sum)     
+
+            return max_sum
+
+        maxx = -inf
+        for num in nums:
+            nums = rotate_by_one(nums)
+            maxx = max(maxx, kadanes(nums))
+        
+        return maxx
