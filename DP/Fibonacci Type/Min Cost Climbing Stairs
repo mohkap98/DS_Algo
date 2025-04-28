@@ -1,0 +1,18 @@
+class Solution:
+    def minCostClimbingStairs(self, cost: List[int]) -> int:
+        n = len(cost)
+        memo = {}
+        
+        def climb(cur):
+            if cur >= n:
+                return 0
+            if cur in memo:
+                return memo[cur]
+            
+            one = cost[cur] + climb(cur + 1)
+            two = cost[cur] + climb(cur + 2)
+            memo[cur] = min(one, two)
+            return memo[cur]
+        
+        # You can start either from step 0 or step 1
+        return min(climb(0), climb(1))
