@@ -1,0 +1,27 @@
+class Solution:
+    def minimumRounds(self, tasks: List[int]) -> int:
+        mapp = Counter(tasks)
+        memo = {}
+        def getRounds(val):
+            if val == 0:
+                return 0
+            if val == 1 or val < 0:
+                return inf
+            if val in memo:
+                return memo[val]
+            two = 1 + getRounds(val-2)
+            three = 1 + getRounds(val-3)
+            memo[val] = min(two, three)
+            return memo[val]
+
+        net_rounds = 0
+        for val in mapp.values():
+            rounds = getRounds(val)
+            if rounds == inf:
+                return -1
+            net_rounds += rounds
+        return net_rounds
+        
+
+
+        
