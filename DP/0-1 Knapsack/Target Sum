@@ -1,0 +1,14 @@
+class Solution:
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        cache = {}
+        def findWays(i, tar):
+            if i >= len(nums):
+                return 1 if not tar else 0
+            if (i,tar) in cache:
+                return cache[(i,tar)]
+            add = findWays(i+1, tar + nums[i])
+            sub = findWays(i+1, tar - nums[i])
+            cache[(i, tar)] = add + sub
+            return cache[(i,tar)]
+        
+        return findWays(0, target)
