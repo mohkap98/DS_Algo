@@ -1,0 +1,24 @@
+class Solution:
+    def knapsack(self, W, val, wt):
+        # code here
+        n = len(val)
+        memo = {}
+        def maxProfit(i, weight):
+            if weight == 0 or i == n:
+                return 0
+            
+            if (i, weight) in memo:
+                return memo[(i,weight)]
+            
+            # valid - both inc and exc
+            if wt[i] <= weight:
+                inc = val[i] + maxProfit(i+1, weight - wt[i])
+                exc = maxProfit(i+1, weight)
+                memo[(i,weight)] = max(inc, exc)
+            # not valid can only exc
+            else:
+                exc = maxProfit(i+1, weight)
+                memo[(i,weight)] = exc
+            return memo[(i,weight)]
+            
+        return maxProfit(0, W)
