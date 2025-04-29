@@ -1,0 +1,16 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        n = len(nums)
+        
+        memo = {}
+        def maxRob(i):
+            if i >= n:
+                return 0
+            if i in memo:
+                return memo[i]
+            rob_second = nums[i] + maxRob(i+2)
+            rob_third = nums[i] + maxRob(i+3)
+            memo[i] =  max(rob_second, rob_third)
+            return memo[i]
+            
+        return max(maxRob(0), maxRob(1))
