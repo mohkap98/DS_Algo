@@ -1,0 +1,19 @@
+O(N)
+
+class Solution:
+    def arrayPairSum(self, nums: List[int]) -> int:
+        freq = [0] * 20001  # range: [-10000, 10000] → shift by +10000
+        for num in nums:
+            freq[num + 10000] += 1
+
+        ans = 0
+        take = True
+
+        for i in range(20001):
+            while freq[i] > 0:
+                if take:
+                    ans += i - 10000  # shift back to actual value
+                take = not take
+                freq[i] -= 1
+
+        return ans
