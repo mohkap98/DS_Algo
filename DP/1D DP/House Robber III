@@ -1,0 +1,24 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def rob(self, root: Optional[TreeNode]) -> int:
+        memo = {}        
+        def postorder(cur):
+            if not cur:
+                return (0,0)  # (with root, without root)
+            
+            if cur in memo:
+                return memo[cur]
+
+            l = postorder(cur.left)
+            r = postorder(cur.right)
+
+            memo[cur] = (cur.val + l[1] + r[1], max(l) + max(r))
+            return memo[cur]
+            
+        withRoot, withoutRoot = postorder(root)
+        return max(withRoot, withoutRoot)
