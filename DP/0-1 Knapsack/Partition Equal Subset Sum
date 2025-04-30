@@ -1,0 +1,26 @@
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        # partition is only possible in arr with sum = even 
+
+        if sum(nums) & 1:
+            return False
+        
+        tar = sum(nums) // 2
+        dp = [[-1] * (tar + 1) for _ in range(len(nums))]
+
+        def equalPart(i, tar):
+            if tar == 0:
+                return True 
+            if tar < 0 or i >= len(nums):
+                return False
+            
+            if dp[i][tar] != -1:
+                return dp[i][tar]
+
+            inc = equalPart(i+1, tar-nums[i])
+            exc = equalPart(i+1, tar)
+
+            dp[i][tar] = inc or exc 
+            return dp[i][tar]
+        return equalPart(0, tar)
+        
