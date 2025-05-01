@@ -1,0 +1,17 @@
+class Solution:
+    def coinChange(self, denomination: List[int], amount: int) -> int:
+        dp = {}
+
+        def minCoins(amt):
+            if amt == 0:
+                return 0
+            if amt < 0:
+                return inf
+            if amt in dp:
+                return dp[amt]
+
+            dp[amt] = min((1 + minCoins(amt - coin)) for coin in denomination)
+            return dp[amt]
+
+        res = minCoins(amount)
+        return res if res != inf else -1
