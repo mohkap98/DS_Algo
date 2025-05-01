@@ -1,0 +1,21 @@
+class Solution:
+    def numDistinct(self, s: str, t: str) -> int:
+        sn = len(s)
+        tn = len(t)
+        memo = {}
+        def LCS(i,j):
+            if j >= tn:
+                return 1
+            if i >= sn:
+                return 0
+            if (i,j) in memo:
+                return memo[(i,j)]
+            if s[i] == t[j]:
+                memo[(i,j)] = LCS(i+1,j+1) + LCS(i+1,j)
+            else:
+                memo[(i,j)] = LCS(i+1, j)
+            
+            return memo[(i,j)]
+
+        return LCS(0,0)
+        
