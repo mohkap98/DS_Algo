@@ -1,0 +1,16 @@
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        n1 = len(word1)
+        n2 = len(word2)
+        memo = {}
+        def LCS(i,j):
+            if i >= n1 or j >= n2:
+                return 0
+            if word1[i] == word2[j]:
+                return 1 + LCS(i+1, j+1)
+            if (i,j) in memo:
+                return memo[(i,j)]
+            memo[(i,j)] = max(LCS(i+1,j), LCS(i,j+1))
+            return memo[(i,j)]
+        palin_cnt =  LCS(0,0)
+        return (n1 - palin_cnt) + (n2 - palin_cnt)
