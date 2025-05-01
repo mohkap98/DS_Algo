@@ -1,0 +1,21 @@
+class Solution:
+    def mincostTickets(self, days: List[int], costs: List[int]) -> int:
+        days_set = set(days)
+        memo = {}
+        
+        def minCost(day):
+            if day > days[-1]:
+                return 0
+            if day in memo:
+                return memo[day]
+            if day not in days_set:
+                return minCost(day+1)
+            
+            day_one = costs[0] + minCost(day+1)
+            day_seven = costs[1] + minCost(day+7)
+            day_thirty = costs[2] + minCost(day+30)
+
+            memo[day] = min(day_one, day_seven, day_thirty)
+            return memo[day]
+
+        return minCost(days[0])
