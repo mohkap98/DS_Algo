@@ -1,0 +1,15 @@
+class Solution:
+    def getRow(self, row: int) -> List[int]:
+        prev = [1]
+        if row == 0:
+            return prev
+        
+        for r in range(1, row+1):
+            cur = [1] * (r+1)
+            for i in range(1, len(cur)-1):
+                cur[i] = prev[i] + prev[i-1]
+            prev = cur
+        
+        return prev
+
+        
