@@ -1,0 +1,19 @@
+class Solution:
+    def longestPalindromeSubseq(self, s: str) -> int:
+        n = len(s)
+        memo = {}
+        def LPS(l,r):
+            if l > r:
+                return 0
+            if l == r:
+                return 1
+            if s[l] == s[r]:
+                return 2 + LPS(l+1, r-1)
+            if (l,r) in memo:
+                return memo[(l,r)]
+            inc = LPS(l+1, r)
+            dec = LPS(l, r-1)
+            memo[(l,r)] = max(inc, dec)
+            return memo[(l,r)]
+        
+        return LPS(0, n-1)
