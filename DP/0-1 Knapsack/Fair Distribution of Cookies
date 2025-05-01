@@ -1,0 +1,22 @@
+class Solution:
+    def distributeCookies(self, cookies: List[int], k: int) -> int:
+        # brute force 
+
+        self.fairness = inf 
+
+        def backtrack(distribution, idx):
+            if idx >= len(cookies):
+                self.fairness = min(self.fairness, max(distribution))
+                return 
+            
+            seen = set()
+            for i in range(k):
+                if distribution[i] in seen:
+                    continue
+                seen.add(distribution[i])
+                distribution[i] += cookies[idx]
+                backtrack(distribution, idx+1)
+                distribution[i] -= cookies[idx]
+            
+        backtrack([0] * k, 0)
+        return self.fairness
