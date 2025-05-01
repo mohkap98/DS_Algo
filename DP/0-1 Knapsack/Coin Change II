@@ -1,0 +1,21 @@
+class Solution:
+    def change(self, amount: int, coins: List[int]) -> int:
+        memo = {}
+
+        def solve(i, amt):
+            if not amt:
+                return 1
+            if amt < 0 or i >= len(coins):
+                return 0
+            
+            if (i, amt) in memo:
+                return memo[(i, amt)]
+
+            inc = solve(i, amt-coins[i])
+            exc = solve(i+1, amt)
+
+            memo[(i, amt)] = inc + exc
+            return memo[(i, amt)]
+        
+        return solve(0, amount)
+        
