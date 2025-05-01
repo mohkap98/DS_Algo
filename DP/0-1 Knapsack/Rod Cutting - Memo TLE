@@ -1,0 +1,20 @@
+class Solution:
+    def cutRod(self, price):
+        n = len(price)
+        memo = dict()
+        
+        def maxProfit(i, rod):
+            if rod == 0:
+                return 0
+            if i >= n or rod < 0:
+                return float('-inf')
+            if (i, rod) in memo:
+                return memo[(i, rod)]
+
+            inc = price[i] + maxProfit(i, rod - (i + 1))
+            exc = maxProfit(i + 1, rod)
+
+            memo[(i, rod)] = max(inc, exc)
+            return memo[(i, rod)]
+
+        return maxProfit(0, n)
