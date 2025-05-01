@@ -1,0 +1,18 @@
+class Solution:
+    def minInsertions(self, s: str) -> int:
+        n = len(s)
+        memo = {}
+        def minIns(l,r):
+            if l>r:
+                return 0
+            if l==r:
+                return 1
+            if (l,r) in memo:
+                return memo[(l,r)]
+            if s[l] == s[r]:
+                return 2 + minIns(l+1, r-1)
+            
+            memo[(l,r)] = max(minIns(l+1,r), minIns(l,r-1))
+            return memo[(l,r)]
+        
+        return n - minIns(0,n-1)
