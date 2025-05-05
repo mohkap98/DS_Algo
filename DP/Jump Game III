@@ -1,0 +1,16 @@
+class Solution:
+    def canReach(self, arr: List[int], start: int) -> bool:
+        n = len(arr)
+        seen = set()
+        memo = {}
+        def DFS(i):
+            if i < 0 or i >= n or i in seen:
+                return False
+            if arr[i] == 0:
+                return True
+            if i in memo:
+                return memo[i]
+            seen.add(i)
+            memo[i] = DFS(i+arr[i]) or DFS(i-arr[i])
+            return memo[i]
+        return DFS(start)
