@@ -1,0 +1,24 @@
+class Solution:
+    def canCross(self, stones: List[int]) -> bool:
+        if stones[1] != 1:
+            return False
+        
+        stones_set = set(stones)
+        memo = {}
+
+        def canJump(k, cur):
+            if cur == stones[-1]:
+                return True
+            if cur not in stones_set:
+                return False
+            if (k, cur) in memo:
+                return memo[(k, cur)]
+
+            move_back = k - 1 > 0 and canJump(k - 1, cur + k - 1)
+            stay = canJump(k, cur + k)
+            move_forward = canJump(k + 1, cur + k + 1)
+
+            memo[(k, cur)] = move_back or stay or move_forward
+            return memo[(k, cur)]
+
+        return canJump(1, 1)
