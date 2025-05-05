@@ -1,0 +1,30 @@
+class Solution:
+    def minJumps(self, arr: List[int]) -> int:
+        index_map = defaultdict(list)
+        n = len(arr)
+        for i in range(n):
+            index_map[arr[i]].append(i)
+
+        q = deque([(0,0)]) # (dist, cur)
+        seen = set([0])
+        while q:
+            dist, cur = q.popleft()
+            if cur == n - 1:
+                return dist
+
+            if cur - 1 >= 0 and cur - 1 not in seen:
+                seen.add(cur)
+                q.append((dist + 1, cur - 1))
+            
+            if cur + 1 < n and cur + 1 not in seen:
+                seen.add(cur)
+                q.append((dist + 1, cur + 1))
+            
+            for i in index_map[arr[cur]]:
+                if cur != i and i not in seen:
+                    seen.add(i)
+                    q.append((dist + 1, i))
+            index_map[arr[cur]].clear() 
+        
+        return -1
+        
