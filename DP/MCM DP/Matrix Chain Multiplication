@@ -1,1 +1,23 @@
+from math import inf
+class Solution:
+    def matrixMultiplication(self, arr):
+        n = len(arr)
+        memo = {}
 
+        def MCM(i, j):
+            if i == j:
+                return 0
+            if (i,j) in memo:
+                return memo[(i,j)]
+
+            minCost = inf
+            for k in range(i, j):
+                cost1 = MCM(i, k)
+                cost2 = MCM(k + 1, j)
+                cost3 = arr[i - 1] * arr[k] * arr[j]
+                minCost = min(minCost, cost1 + cost2 + cost3)
+
+            memo[(i,j)] = minCost
+            return memo[(i,j)]
+
+        return MCM(1, n - 1)
