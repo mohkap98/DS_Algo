@@ -1,0 +1,33 @@
+class Solution:
+    def uniquePathsIII(self, grid: List[List[int]]) -> int:
+        # count zeroes 
+        m, n = len(grid), len(grid[0])
+        cnt = 0
+        rs, cs = 0,0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 1:
+                    rs, cs = i,j
+                if grid[i][j] == 0:
+                    cnt += 1
+        
+        seen = set()
+        def getPaths(i,j):
+            if i < 0 or i >= m or j < 0 or j >= n or grid[i][j] == -1 or (i,j) in seen:
+                return 0
+            if grid[i][j] == 2:
+                return 1 if len(seen) == cnt + 1 else 0
+ 
+            seen.add((i,j))
+            r = getPaths(i,j+1)
+            d = getPaths(i+1,j)
+            l = getPaths(i,j-1)
+            u = getPaths(i-1,j)
+            seen.remove((i,j))
+            return r + l + d + u
+        
+        return getPaths(rs,cs)
+
+
+
+        
