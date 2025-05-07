@@ -1,0 +1,30 @@
+class Solution:
+    def numTilings(self, n: int) -> int:
+        cache = {}
+        MOD = 10**9 + 7
+        def findWays(p1,p2):
+            if p1 == 0 and p2 == 0:
+                return 1
+            if p1 < 0 or p2 < 0:
+                return 0
+            
+            if (p1,p2) in cache:
+                return cache[(p1,p2)]
+
+            count = 0
+            if p1 == p2:
+                count += findWays(p1-1,p2-1) # vertical |
+                count += findWays(p1-2,p2-2) # horizontal --
+                count += findWays(p1-1,p2-2) # inverted L
+                count += findWays(p1-2,p2-1) # upside down L
+            elif p1 > p2:
+                count += findWays(p1-2,p2) # only p1 --
+                count += findWays(p1-2,p2-1) # upside inverted L 
+            else:
+                count += findWays(p1,p2-2) # only p2 --
+                count += findWays(p1-1,p2-2) # L
+            
+            cache[(p1,p2)] = count
+            return cache[(p1,p2)]
+        return findWays(n,n) % MOD 
+
