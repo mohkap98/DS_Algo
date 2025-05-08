@@ -1,0 +1,13 @@
+class Solution:
+    def stoneGame(self, piles: List[int]) -> bool:
+        
+        @lru_cache(None)
+        def dfs(l, r):
+            # Maximum difference in score the current player can achieve
+            if l == r:
+                return piles[l]
+            pick_left = piles[l] - dfs(l + 1, r)
+            pick_right = piles[r] - dfs(l, r - 1)
+            return max(pick_left, pick_right)
+        
+        return dfs(0, len(piles) - 1) > 0
