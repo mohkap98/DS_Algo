@@ -1,0 +1,43 @@
+class NumArray:
+    def __init__(self, nums: List[int]):
+        self.nums = nums
+        self.n = len(nums)
+        self.segTree = [0] * (4 * self.n)
+
+        def buildTree(i, l, r):
+            if l == r:
+                self.segTree[i] = nums[l]
+                return
+            mid = (l + r) // 2
+            buildTree(2 * i + 1, l, mid)
+            buildTree(2 * i + 2, mid + 1, r)
+            self.segTree[i] = self.segTree[2 * i + 1] + self.segTree[2 * i + 2]
+
+        buildTree(0, 0, self.n - 1)
+
+    def update(self, index: int, val: int) -> None:
+        def updateTree(i, l, r):
+            if l == r:
+                self.segTree[i] = val
+                return
+            mid = (l + r) // 2
+            if index <= mid:
+                updateTree(2 * i + 1, l, mid)
+            else:
+                updateTree(2 * i + 2, mid + 1, r)
+            self.segTree[i] = self.segTree[2 * i + 1] + self.segTree[2 * i + 2]
+
+        self.nums[index] = val
+        updateTree(0, 0, self.n - 1)
+
+    def sumRange(self, st: int, end: int) -> int:
+        def RSQ(i, l, r):
+            if l > end or r < st:  # No overlap
+                return 0
+            if st <= l and r <= end:  # Total overlap
+                return self.segTree[i]
+            mid = (l + r) // 2
+            # Partial overlap
+            return RSQ(2 * i + 1, l, mid) + RSQ(2 * i + 2, mid + 1, r)
+
+        return RSQ(0, 0, self.n - 1)
