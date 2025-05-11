@@ -1,0 +1,21 @@
+class Solution:
+    def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
+        s = len(strs)
+        cache = {}
+        def findmax(i, remOnes, remZeroes):
+            if i >= s:
+                return 0
+            if (i, remOnes, remZeroes) in cache:
+                return cache[(i, remOnes, remZeroes)]
+            freq = Counter(strs[i])
+            curOnes = freq['1']
+            curZeroes = freq['0']
+            inc = 0
+            if curOnes <= remOnes and curZeroes <= remZeroes:
+                inc = 1 + findmax(i+1, remOnes - curOnes, remZeroes - curZeroes)
+            
+            exc = findmax(i+1, remOnes, remZeroes)
+            cache[(i, remOnes, remZeroes)] = max(inc, exc)
+            return cache[(i, remOnes, remZeroes)]
+        
+        return findmax(0, n, m)
