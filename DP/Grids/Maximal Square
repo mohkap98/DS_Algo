@@ -1,0 +1,23 @@
+class Solution:
+    def maximalSquare(self, matrix: List[List[str]]) -> int:
+        m, n = len(matrix), len(matrix[0])
+        dp = {}
+        def maxSquare(r,c):
+            if r >= m or c >= n or r < 0 or c < 0 or matrix[r][c] == "0":
+                return 0
+            
+            if (r,c) in dp:
+                return dp[(r,c)]
+            
+            right = maxSquare(r,c+1)
+            down = maxSquare(r+1, c)
+            diag = maxSquare(r+1, c+1)
+            dp[(r,c)] = 1 + min(right, down, diag)
+            return dp[(r,c)]
+            
+        res = 0
+        for i in range(m):
+            for j in range(n):
+                if matrix[i][j] == '1':
+                    res = max(res, maxSquare(i,j))
+        return res*res
