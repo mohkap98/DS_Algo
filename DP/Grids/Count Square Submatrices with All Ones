@@ -1,0 +1,25 @@
+class Solution:
+    def countSquares(self, matrix: List[List[int]]) -> int:
+        m,n = len(matrix), len(matrix[0])
+        cache = {}
+        def count(r,c):
+            if r >= m or c >= n or matrix[r][c] == 0:
+                return 0
+            
+            if (r,c) in cache:
+                return cache[(r,c)]
+            
+            right = count(r,c+1)
+            down = count(r+1,c)
+            diag = count(r+1,c+1)
+            
+            cache[(r,c)] = 1 + min(right, down, diag)
+            return cache[(r,c)]
+        
+        cnt = 0
+        for i in range(m):
+            for j in range(n):
+                if matrix[i][j]:
+                    cnt += count(i,j)
+        
+        return cnt
