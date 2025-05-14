@@ -1,0 +1,21 @@
+class Solution:
+    def partitionLabels(self, s: str) -> List[int]:
+        freq = Counter(s)
+        output = []
+        n = len(s)
+        l,r = 0,0
+        visiting = set()
+        while l <= r and r < n:
+            visiting.add(s[r])
+            freq[s[r]] -= 1
+            if not freq[s[r]]:
+                visiting.remove(s[r])
+            if not visiting:
+                output.append(r-l+1)
+                l = r+1
+            r+=1
+        
+        return output
+
+
+        
