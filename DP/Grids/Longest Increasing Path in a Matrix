@@ -1,0 +1,39 @@
+class Solution:
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        m,n = len(matrix), len(matrix[0])
+
+        cache = {}
+
+        def DFS(r,c):
+            if (r,c) in cache:
+                return cache[(r,c)]
+
+            top = 1
+            if r-1 >= 0 and matrix[r][c] < matrix[r-1][c]:
+                top = 1 + DFS(r-1, c)
+            
+            right = 1
+            if c+1 < n and matrix[r][c] < matrix[r][c+1]: 
+                right = 1 + DFS(r, c+1)
+            
+            bottom = 1
+            if r+1 < m and matrix[r][c] < matrix[r+1][c]:
+                bottom = 1 + DFS(r+1, c)
+            
+            left = 1
+            if c-1 >= 0 and matrix[r][c] < matrix[r][c-1]:
+                left = 1 + DFS(r, c-1)
+
+            cache[(r,c)] =  max(top, right, bottom, left)
+            return cache[(r,c)]
+
+        max_path = 0
+        for i in range(m):
+            for j in range(n):
+                max_path = max(max_path, DFS(i,j))
+        
+        return max_path
+
+
+
+        
