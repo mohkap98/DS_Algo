@@ -1,0 +1,30 @@
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        n1, n2, n = len(s1), len(s2), len(s3)
+        if n1 + n2 != n:
+            return False
+        
+        cache = {}
+
+        def interleave(i,j,p):
+            if i >= n1 and j >= n2 and p >= n:
+                return True
+            
+            if i < n1 and s1[i] != s3[p] and j < n2 and s2[j] != s3[p]:
+                return False
+            
+            if (i,j,p) in cache:
+                return cache[(i,j,p)]
+            
+            res = False
+            if i < n1 and s1[i] == s3[p]:
+                res = res or interleave(i+1,j,p+1)
+            if j < n2 and s2[j] == s3[p]:
+                res = res or interleave(i,j+1,p+1)
+            
+            cache[(i,j,p)] = res
+            return cache[(i,j,p)]
+        
+        return interleave(0,0,0)
+
+        
