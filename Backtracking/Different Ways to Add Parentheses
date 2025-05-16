@@ -1,0 +1,28 @@
+class Solution:
+    def diffWaysToCompute(self, expression: str) -> List[int]:
+        operators = {
+            '+' : lambda x, y : x+y,
+            '-' : lambda x, y : x-y,
+            '*' : lambda x, y : x*y
+        }
+
+        n = len(expression)
+
+        def getWays(left, right):
+            res = []
+
+            for i in range(left, right + 1):
+                opr = expression[i]
+                if opr in operators:
+                    nums1 = getWays(left, i-1)
+                    nums2 = getWays(i+1, right)
+
+                    for n1 in nums1:
+                        for n2 in nums2:
+                            res.append(operators[opr](n1, n2))
+            
+            if not res:
+                res.append(int(expression[left: right+1]))
+            return res
+        
+        return getWays(0, n-1)
