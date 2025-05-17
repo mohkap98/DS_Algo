@@ -1,0 +1,12 @@
+class Solution:
+    def findLongestChain(self, pairs: List[List[int]]) -> int:
+        pairs.sort(key = lambda x : x[1])
+        a,b = pairs[0]
+        pair_cnt = 1
+        for i in range(1,len(pairs)):
+            c,d = pairs[i]
+            if b < c:
+                pair_cnt += 1
+                b = d
+        return pair_cnt
+
