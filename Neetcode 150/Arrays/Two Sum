@@ -1,0 +1,12 @@
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        remainder = dict()
+
+        for i in range(len(nums)):
+            if target - nums[i] in remainder:
+                return [remainder[target - nums[i]], i]
+            remainder[nums[i]] = i
+        
+        return [-1,-1]
+
+        
