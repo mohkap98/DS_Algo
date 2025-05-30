@@ -1,0 +1,26 @@
+from math import inf
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        l,r = 0,0
+        ans = ""
+        count = Counter(t)
+        minlen = inf
+        changes = len(t)
+        
+        while r<len(s):
+            if s[r] in count:
+                if count[s[r]] > 0:
+                    changes -= 1
+                count[s[r]] -= 1
+                
+            while changes == 0:
+                if r-l+1 < minlen:
+                    ans = s[l:r+1]
+                    minlen = r-l+1
+                if s[l] in count:
+                    count[s[l]] += 1
+                    if count[s[l]] > 0:
+                        changes += 1
+                l+=1
+            r+=1
+        return ans 
