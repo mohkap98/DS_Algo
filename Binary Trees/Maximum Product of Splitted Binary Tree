@@ -1,0 +1,31 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def maxProduct(self, root: Optional[TreeNode]) -> int:
+        def getSum(cur):
+            if not cur:
+                return 0
+            l = getSum(cur.left) 
+            r = getSum(cur.right)
+            return cur.val + l + r
+        total = getSum(root) 
+        ans = 0
+        def DFS(cur):
+            nonlocal ans, total
+            if not cur:
+                return 0
+            l = DFS(cur.left)
+            r = DFS(cur.right)
+            curSum = cur.val + l + r
+            ans = max(ans, (total - curSum)* curSum)
+            return curSum
+        
+        DFS(root)
+        return ans % (10**9 + 7)
+
+
+        
