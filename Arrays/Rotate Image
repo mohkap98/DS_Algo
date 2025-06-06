@@ -1,0 +1,26 @@
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        # tanspose of the matrix
+        m, n = len(matrix), len(matrix[0]) 
+        for i in range(m):
+            for j in range(i+1, n):
+                if i < j:
+                    matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+
+        # reverse rows 0, n-1 till we to the middle row
+        for row in matrix:
+            self.reverse(row)
+        
+        return matrix
+    
+
+    def reverse(self, row):
+        p1, p2 = 0, len(row)-1
+        while p1 < p2:
+            row[p1], row[p2] = row[p2], row[p1]
+            p1+=1
+            p2-=1
+
+
+
+        
