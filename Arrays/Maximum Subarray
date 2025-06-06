@@ -1,0 +1,20 @@
+def maximumSumSubarray(n, arr):
+    max_sum = -inf
+    cur_sum = 0
+
+    left, right = 0, 0
+    start = 0
+
+    for i in range(n):
+        cur_sum += arr[i]
+
+        if cur_sum > max_sum:
+            max_sum = cur_sum
+            left = start
+            right = i
+
+        if cur_sum < 0:
+            cur_sum = 0
+            start = i+1
+
+    return arr[left: right + 1]
