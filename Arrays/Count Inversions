@@ -1,0 +1,38 @@
+class Solution:
+    #User function Template for python3
+    #Function to count inversions in the array.
+    def inversionCount(self, arr):
+        # Your Code Here
+        self.cnt = 0
+        
+        def merge(arr1, arr2):
+            n1 = len(arr1)
+            n2 = len(arr2)
+            i,j = 0,0
+            res = []
+            while i < n1 and j < n2:
+                if arr1[i] > arr2[j]:
+                    self.cnt += (n1 - i)
+                    res.append(arr2[j])
+                    j+=1
+                else:
+                    res.append(arr1[i])
+                    i+=1
+            
+            res.extend(arr1[i:] or arr2[j:])
+            return res
+                
+        
+        def divide(arr):
+            n = len(arr)
+            if n <= 1:
+                return arr
+            mid = n // 2
+            l = arr[:mid]
+            r = arr[mid:]
+            al = divide(l)
+            ar = divide(r)
+            return merge(al, ar)
+        
+        divide(arr)
+        return self.cnt
