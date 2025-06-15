@@ -1,0 +1,23 @@
+class Solution:
+    def diameter(self, root: UndirectedGraphNode) -> int:
+        # write your code here
+        max_dia = 0
+        def DFS(cur):
+            nonlocal max_dia
+            if not cur:
+                return 0
+            
+            max1 = 0
+            max2 = 0
+            for nei in cur.neighbors:
+                node_depth = DFS(nei) + 1
+                if node_depth > max1:
+                    max2 = max1
+                    max1 = node_depth
+                elif node_depth > max2:
+                    max2 = node_depth
+            max_dia = max(max_dia, max1 + max2)
+            return max1
+        
+        DFS(root)
+        return max_dia
