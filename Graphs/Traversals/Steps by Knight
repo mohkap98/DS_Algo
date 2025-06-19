@@ -1,0 +1,35 @@
+from collections import deque
+class Solution:
+	def minStepToReachTarget(self, knightPos, targetPos, n):
+		#Code here
+		board = [[0] * n for _ in range(n)]
+	    tr, tc = targetPos
+		board[tr-1][tc-1] = 1
+		
+		# BFS 
+		q = deque()
+		q.append((knightPos[0]-1, knightPos[1]-1, 0)) # initial config
+		
+		# knight moves
+		moves = [
+            (-2, -1), (-2, 1), (2, -1), (2, 1),
+            (-1, -2), (-1, 2), (1, -2), (1, 2)
+        ]
+
+	    # track visited cells 
+	    seen = set()
+	    seen.add((knightPos[0]-1, knightPos[1]-1))
+	    
+	    while q:
+	        r, c, total_moves = q.popleft()
+	        if board[r][c] == 1:
+	            return total_moves
+ 
+	        for move in moves:
+	            nr, nc = move
+	            row, col = r + nr, c + nc
+	            if row < 0 or col < 0 or row >= n or col >= n or (row, col) in seen:
+	                continue
+	            seen.add((row, col))
+	            q.append((row, col, total_moves + 1))
+	    
