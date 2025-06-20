@@ -1,0 +1,45 @@
+class Solution:
+    
+    def kosaraju(self, adj):
+        #code here
+        V = len(adj)
+        stack = []
+        seen = set()
+        def DFS(cur):
+            seen.add(cur)
+            for nei in adj[cur]:
+                if nei not in seen:
+                    DFS(nei)
+            
+            stack.append(cur)
+        
+        for i in range(V):
+            if i not in seen:
+                DFS(i)
+        
+        rev_adj = [[] for _ in range(V)]
+        
+        for u in range(V):
+            for v in adj[u]:
+                rev_adj[v].append(u)
+        
+        seen.clear()
+        scc = 0
+        
+        def DFS2(cur):
+            seen.add(cur)
+            for nei in rev_adj[cur]:
+                if nei not in seen:
+                    DFS2(nei)
+        
+        while stack:
+            node = stack.pop()
+            if node not in seen:
+                scc += 1
+                DFS2(node)
+        
+        return scc
+            
+            
+        
+        
