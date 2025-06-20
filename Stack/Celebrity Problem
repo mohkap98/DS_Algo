@@ -1,0 +1,27 @@
+class Solution:
+    def celebrity(self, mat):
+        n = len(mat)
+        stack = [i for i in range(n)]
+
+        # Step 1: Narrow down to 1 candidate
+        while len(stack) > 1:
+            a = stack.pop()
+            b = stack.pop()
+            if mat[a][b] == 1:
+                stack.append(b)  # a knows b → a can't be celeb
+            else:
+                stack.append(a)  # a doesn't know b → b can't be celeb
+
+        if not stack:
+            return -1
+
+        candidate = stack[-1]
+
+        # Step 2: Verify the candidate
+        for i in range(n):
+            if i == candidate:
+                continue
+            if mat[candidate][i] == 1 or mat[i][candidate] == 0:
+                return -1
+
+        return candidate
