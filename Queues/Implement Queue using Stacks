@@ -1,0 +1,33 @@
+class MyQueue:
+
+    def __init__(self):
+        self.addStack = []
+        self.delStack = []
+       
+    def push(self, x: int) -> None:
+        self.addStack.append(x) # O(1)
+       
+    def pop(self) -> int:
+        if self.delStack:
+            return self.delStack.pop() # O(1)
+        else:
+            while self.addStack: # O(n) for some cases
+                self.delStack.append(self.addStack.pop())
+            return self.delStack.pop()
+       
+    def peek(self) -> int:
+        if self.delStack:
+            return self.delStack[-1] # O(1)
+        if self.addStack:
+            return self.addStack[0]
+       
+    def empty(self) -> bool:
+        return len(self.delStack) + len(self.addStack) == 0 
+
+
+# Your MyQueue object will be instantiated and called as such:
+# obj = MyQueue()
+# obj.push(x)
+# param_2 = obj.pop()
+# param_3 = obj.peek()
+# param_4 = obj.empty()
