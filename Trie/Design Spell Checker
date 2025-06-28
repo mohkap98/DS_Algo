@@ -1,0 +1,45 @@
+class TrieNode:
+    def __init__(self) -> None:
+        self.children = {}
+        self.endOfWord = False 
+    
+
+class SpellChecker:
+    def __init__(self) -> None:
+        self.root = TrieNode()
+        self.suggestions = []
+    
+    def insertWord(self, word):
+        cur = self.root
+        for ch in word:
+            if ch not in cur.children:
+                cur.children[ch] = TrieNode()
+            cur = cur.children[ch]
+        cur.endOfWord = True
+    
+    def searchWord(self, word):
+        cur = self.root
+        for ch in word:
+            if ch in cur.children:
+                cur = cur.children[ch]
+        
+        if cur.endOfWord == True:
+            return True
+        
+        self.printSuggestions(cur, word)
+        return self.suggestions
+    
+    def printSuggestions(self, cur, prefix):
+        if cur.endOfWord:
+            self.suggestions.append(prefix)
+        
+        for key in cur.children:
+            self.printSuggestions(cur.children[key], prefix + key)
+
+            
+
+sc = SpellChecker()
+sc.insertWord("geeks")
+sc.insertWord("gee")
+sc.insertWord("geeksforgeeks")
+print(sc.searchWord("ge"))
