@@ -1,0 +1,46 @@
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.EOW = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insertWord(self, word):
+        cur = self.root
+        for ch in word:
+            if ch not in cur.children:
+                cur.children[ch] = TrieNode()
+            cur = cur.children[ch]
+        cur.EOW = True
+
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
+        trie = Trie()
+        for word in wordDict:
+            trie.insertWord(word)
+        
+        res = []
+
+        def DFS(node, i, path, wsf):
+            if i == len(s):
+                if node.EOW:
+                    path.append(wsf)
+                    res.append(" ".join(path))
+                    path.pop()
+                return
+            
+            ch = s[i]
+            if ch not in node.children:
+                return
+            
+            DFS(node.children[ch], i + 1, path, wsf + ch)
+
+            if node.children[ch].EOW:
+                path.append(wsf + ch)
+                DFS(trie.root, i + 1, path, "")
+                path.pop()
+
+        DFS(trie.root, 0, [], "")
+        return res
