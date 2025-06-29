@@ -1,0 +1,51 @@
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.index = -1
+        self.palinsBelow = []  # indices of words with palindromic prefixes at this point
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def isPalindrome(self, word):
+        return word == word[::-1]
+
+    def insert(self, word, index):
+        cur = self.root
+        for i, ch in enumerate(reversed(word)):
+            if self.isPalindrome(word[:len(word) - i]):
+                cur.palinsBelow.append(index)
+            if ch not in cur.children:
+                cur.children[ch] = TrieNode()
+            cur = cur.children[ch]
+        cur.index = index
+        cur.palinsBelow.append(index)
+
+    def search(self, word, index):
+        res = []
+        cur = self.root
+        for i, ch in enumerate(word):
+            # Case 1: Found a word and the rest of current word is a palindrome
+            if cur.index >= 0 and cur.index != index and self.isPalindrome(word[i:]):
+                res.append([index, cur.index])
+            if ch not in cur.children:
+                return res
+            cur = cur.children[ch]
+
+        # Case 2: Check all palindrome suffixes below
+        for j in cur.palinsBelow:
+            if j != index:
+                res.append([index, j])
+        return res
+
+class Solution:
+    def palindromePairs(self, words: List[str]) -> List[List[int]]:
+        trie = Trie()
+        for i, word in enumerate(words):
+            trie.insert(word, i)
+
+        res = []
+        for i, word in enumerate(words):
+            res.extend(trie.search(word, i))
+        return res
