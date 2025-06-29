@@ -1,0 +1,33 @@
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insertProduct(self, product):
+        cur = self.root
+        for ch in product:
+            if ch not in cur.children:
+                cur.children[ch] = TrieNode()
+            cur = cur.children[ch]
+            if len(cur.suggestions) < 3:
+                cur.suggestions.append(product)
+            
+    def getSuggestions(self, pref):
+        cur = self.root
+        for ch in pref:
+            if ch not in cur.children:
+                return []
+            cur = cur.children[ch]
+        return cur.suggestions
+class Solution:
+    def suggestedProducts(self, products: List[str], searchWord: str) -> List[List[str]]:
+        trie = Trie()
+        for product in sorted(products):
+            trie.insertProduct(product)
+        suggestions = []
+        for i in range(len(searchWord)):
+            suggestion = trie.getSuggestions(searchWord[:i+1]) 
+            suggestions.append(suggestion)
+        
+        return suggestions
+
+
