@@ -1,0 +1,20 @@
+class Solution:
+    def maxCoins(self, nums: List[int]) -> int:  
+        nums = [1] + nums + [1]
+        n = len(nums)
+
+        @lru_cache(None)
+        def DFS(l, r):
+            if l > r:
+                return 0
+
+            max_coins = 0
+            for p in range(l, r + 1):
+                ans3 = nums[l - 1] * nums[p] * nums[r + 1]
+                ans1 = DFS(l, p - 1)
+                ans2 = DFS(p + 1, r)
+                max_coins = max(max_coins, ans1 + ans2 + ans3)
+
+            return max_coins
+
+        return DFS(1, n - 2)
