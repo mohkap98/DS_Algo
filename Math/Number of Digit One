@@ -1,0 +1,22 @@
+class Solution:
+    def countDigitOne(self, n: int) -> int:
+        s = str(n)
+        length = len(s)
+        count = 0
+
+        for i in range(length):
+            current = int(s[i])
+            left = int(s[:i]) if i > 0 else 0
+            right = int(s[i+1:]) if i < length - 1 else 0
+            position = 10 ** (length - i - 1)
+
+            if current == 0:
+                count += left * position
+            elif current == 1:
+                count += left * position + (right + 1)
+            else:
+                count += (left + 1) * position
+        
+        return count
+
+        
