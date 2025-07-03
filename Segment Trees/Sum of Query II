@@ -1,0 +1,20 @@
+#User function Template for python3
+class Solution:
+    def querySum(self, n, arr, q, queries):
+        # code here
+        prefix_arr = [0] * (n+1)
+        for i in range(1,n+1):
+            prefix_arr[i] = arr[i-1] + prefix_arr[i-1]
+        
+        res = []
+        for qry in range(1,2*q,2):
+            st = queries[qry - 1] - 1
+            end = queries[qry]
+            res.append(prefix_arr[end] - prefix_arr[st])
+        
+        return res
+
+            
+            
+            
+            
