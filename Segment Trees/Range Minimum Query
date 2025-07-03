@@ -1,0 +1,26 @@
+def constructST(arr, n):
+    segmentTree = [0] * (4 * n)
+
+    def build(cur, l, r):
+        if l == r:
+            segmentTree[cur] = arr[l]
+            return
+        mid = (l + r) // 2
+        build(2 * cur + 1, l, mid)
+        build(2 * cur + 2, mid + 1, r)
+        segmentTree[cur] = min(segmentTree[2 * cur + 1], segmentTree[2 * cur + 2])
+
+    build(0, 0, n - 1)
+    return segmentTree
+
+def query(qs, qe, l, r, cur, segTree):
+    if l > qe or r < qs:
+        return float('inf')
+    if l >= qs and r <= qe:
+        return segTree[cur]
+    mid = (l + r) // 2
+    return min(query(qs, qe, l, mid, 2 * cur + 1, segTree),
+               query(qs, qe, mid + 1, r, 2 * cur + 2, segTree))
+
+def RMQ(segTree, n, qs, qe):
+    return query(qs, qe, 0, n - 1, 0, segTree)
