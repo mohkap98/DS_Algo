@@ -1,0 +1,51 @@
+class SegmentTree:
+    def __init__(self, arr):
+        self.n = len(arr)
+        self.segTree = [0] * (4 * self.n)
+        self.lazy = [0] * (4 * self.n)
+        self.buildTree(0, 0, self.n - 1, arr)
+
+    def buildTree(self, cur, l, r, arr):
+        if l == r:
+            self.segTree[cur] = arr[l]
+            return
+        mid = (l + r) // 2
+        self.buildTree(2 * cur + 1, l, mid, arr)
+        self.buildTree(2 * cur + 2, mid + 1, r, arr)
+        self.segTree[cur] = self.segTree[2 * cur + 1] + self.segTree[2 * cur + 2]
+
+    def propagate(self, l, r, cur):
+        if self.lazy[cur] != 0:
+            self.segTree[cur] += (r - l + 1) * self.lazy[cur]
+            if l != r:
+                self.lazy[2 * cur + 1] += self.lazy[cur]
+                self.lazy[2 * cur + 2] += self.lazy[cur]
+            self.lazy[cur] = 0
+
+    def updateRange(self, l, r, st, end, val, cur):
+        self.propagate(st, end, cur)
+        if r < st or l > end:  # No overlap
+            return
+        if l <= st and end <= r:  # Total overlap
+            self.lazy[cur] += val
+            self.propagate(st, end, cur)
+            return
+        mid = (st + end) // 2
+        self.updateRange(l, r, st, mid, val, 2 * cur + 1)
+        self.updateRange(l, r, mid + 1, end, val, 2 * cur + 2)
+        self.segTree[cur] = self.segTree[2 * cur + 1] + self.segTree[2 * cur + 2]
+
+    def RSQ(self, l, r, st, end, cur):
+        self.propagate(st, end, cur)
+        if r < st or l > end:  # No overlap
+            return 0
+        if l <= st and end <= r:  # Total overlap
+            return self.segTree[cur]
+        mid = (st + end) // 2
+        return self.RSQ(l, r, st, mid, 2 * cur + 1) + self.RSQ(l, r, mid + 1, end, 2 * cur + 2)
+
+    def query(self, l, r):
+        return self.RSQ(l, r, 0, self.n - 1, 0)
+
+    def update(self, l, r, val):
+        self.updateRange(l, r, 0, self.n - 1, val, 0)
