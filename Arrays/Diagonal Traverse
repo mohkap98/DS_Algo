@@ -1,0 +1,21 @@
+class Solution:
+    def findDiagonalOrder(self, mat: List[List[int]]) -> List[int]:
+        m, n = len(mat), len(mat[0])
+        diag = defaultdict(list)
+
+        for i in range(m):
+            for j in range(n):
+                diag[i+j].append(mat[i][j])
+        
+        res = [] 
+        for key, val in diag.items():
+            if key % 2 == 0:
+                res += reversed(val)
+            else:
+                res += val
+        return res
+
+
+
+
+        
