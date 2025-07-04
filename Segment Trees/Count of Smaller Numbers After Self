@@ -1,0 +1,39 @@
+class Solution:
+    def countSmaller(self, nums: List[int]) -> List[int]:
+        self.counts = [0] * len(nums)
+
+        def merge(left, right):
+            p1, p2 = len(left)-1, len(right)-1
+            ans = []
+            while p1 >= 0 and p2 >= 0:
+                if left[p1][0] > right[p2][0]:
+                    self.counts[left[p1][1]] += p2 + 1
+                    ans.append(left[p1])
+                    p1 -= 1
+                else:
+                    ans.append(right[p2])
+                    p2 -= 1
+            
+            while p1 >= 0:
+                ans.append(left[p1])
+                p1 -= 1
+            
+            while p2 >= 0:
+                ans.append(right[p2])
+                p2 -= 1
+
+            return ans[::-1]
+        
+        def mergeSort(nums):
+            if len(nums) == 1:
+                return nums
+            
+            mid = len(nums) // 2
+            l = mergeSort(nums[:mid])
+            r = mergeSort(nums[mid:])
+            return merge(l,r)
+
+        nums = [(val, idx) for idx, val in enumerate(nums)]
+        mergeSort(nums)
+        return self.counts
+        
