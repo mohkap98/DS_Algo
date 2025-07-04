@@ -1,0 +1,12 @@
+class Solution:
+    def addSpaces(self, s: str, spaces: List[int]) -> str:
+        spaces_set = set(spaces)
+        res = [' '] if 0 in spaces_set else []
+        
+        for i in range(len(s)):
+            res.append(s[i])
+            if i + 1 in spaces_set:
+                res.append(' ')
+                spaces_set.remove(i+1)
+        return "".join(res)
+
