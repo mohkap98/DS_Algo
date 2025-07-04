@@ -1,0 +1,28 @@
+class RangeFreqQuery:
+
+    def __init__(self, arr: List[int]):
+        self.n = len(arr)
+        self.segTree = [0] * 4 * self.n
+
+        def buildTree(l, r, cur):
+            if l == r:
+                self.segTree[cur] = Counter([arr[l]])
+                return
+            mid = (l + r) // 2
+            buildTree(l, mid, 2 * cur + 1)
+            buildTree(mid + 1, r, 2 * cur + 2)
+            self.segTree[cur] = self.segTree[2 * cur + 1] + self.segTree[2 * cur + 2]
+
+        buildTree(0, self.n - 1, 0)
+
+    def queryTree(self, st, end, l, r, val, cur):
+        if r < st or l > end:  # No overlap
+            return 0
+        if l <= st and end <= r:  # Total overlap
+            return self.segTree[cur][val]
+        mid = (st + end) // 2
+        return self.queryTree(st, mid, l, r, val, 2 * cur + 1) + \
+               self.queryTree(mid + 1, end, l, r, val, 2 * cur + 2)
+
+    def query(self, left: int, right: int, value: int) -> int:
+        return self.queryTree(0, self.n - 1, left, right, value, 0)
