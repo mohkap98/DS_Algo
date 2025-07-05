@@ -1,0 +1,17 @@
+class Solution:
+    def findPaths(self, m: int, n: int, maxMove: int, startRow: int, startColumn: int) -> int:
+        MOD = 10**9 + 7
+        cache = {}
+
+        def DFS(r, c, moves):
+            if r < 0 or c < 0 or r >= m or c >= n:
+                return 1 
+            if moves == 0:
+                return 0
+            if (r,c,moves) in cache:
+                return cache[(r,c,moves)]
+
+            cache[(r,c,moves)] = (DFS(r, c+1, moves-1) + DFS(r, c-1, moves-1) + DFS(r+1, c, moves-1) + DFS(r-1, c, moves-1)) % MOD
+            return cache[(r,c,moves)]
+        
+        return DFS(startRow, startColumn, maxMove)
