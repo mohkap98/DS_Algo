@@ -1,0 +1,24 @@
+class Solution:
+    def kSmallestPairs(self, nums1, nums2, k: int):
+        n1, n2 = len(nums1), len(nums2)
+
+        heap = [(nums1[0] + nums2[0], 0,0)]
+        heapq.heapify(heap)
+        res = []
+        seen = set([(0,0)])
+
+        while heap and k:
+            curSum, i, j = heapq.heappop(heap)
+            res.append([nums1[i], nums2[j]])
+            
+            if i < n1 and j+1 < n2 and (i,j+1) not in seen:
+                heapq.heappush(heap, (nums1[i] + nums2[j+1], i, j+1))
+                seen.add((i,j+1))
+            
+            if j < n2 and i+1 < n1 and (i+1,j) not in seen:
+                heapq.heappush(heap, (nums1[i+1] + nums2[j], i+1, j))
+                seen.add((i+1,j))
+            
+            k-=1
+
+        return res
