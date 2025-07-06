@@ -1,0 +1,21 @@
+class Solution:
+    def findRightInterval(self, intervals: List[List[int]]) -> List[int]:
+        n = len(intervals)
+        
+        # Attach original indices to intervals
+        sorted_intervals = sorted((start, i) for i, (start, _) in enumerate(intervals))
+        res = [-1] * n
+
+        # For each interval, binary search for smallest interval whose start >= current end
+        for i, (start, end) in enumerate(intervals):
+            l, r = 0, n - 1
+            while l <= r:
+                mid = (l + r) // 2
+                if sorted_intervals[mid][0] >= end:
+                    r = mid - 1
+                else:
+                    l = mid + 1
+            if l < n:
+                res[i] = sorted_intervals[l][1]
+
+        return res
