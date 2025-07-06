@@ -1,0 +1,15 @@
+class Solution:
+    def subsetXORSum(self, nums: List[int]) -> int:
+        self.XOR = 0
+        
+        def DFS(xor, i):
+            if i >= len(nums):
+                self.XOR += xor
+                return 
+            
+            DFS(xor^nums[i], i+1)
+            DFS(xor, i+1)
+        
+        DFS(0,0)
+        return self.XOR
+        
