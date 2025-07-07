@@ -1,24 +1,28 @@
-class UnionFind:
-    def __init__(self, n):
+class DSU:
+    def __init__(self, n) -> None:
         self.parent = [i for i in range(n)]
         self.rank = [0 for _ in range(n)]
     
-    def union(self, v1, v2):
-        p1 = self.find(v1)
-        p2 = self.find(v2)
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])  # 🔧 Path compression
+        return self.parent[x]
 
-        if p1 == p2:
+    
+    def union(self, u, v):
+        par_u = self.find(u)
+        par_v = self.find(v)
+        
+        if par_u == par_v:
             return 
         else:
-            if self.rank[p1] > self.rank[p2]:
-                self.parent[p2] = p1
-            elif self.rank[p2] > self.rank[p1]:
-                self.parent[p1] = p2
+            if self.rank[par_u] > self.rank[par_v]:
+                self.parent[par_v] = par_u
+            elif self.rank[par_v] > self.rank[par_u]:
+                self.parent[par_u] = par_v
             else:
-                self.parent[p1] = p2
-                self.rank[p2] += 1
+                self.parent[par_v] = par_u
+                self.rank[par_u] += 1
+    
+                    
         
-    def find(self, v):
-        while self.parent[v] != v:
-            v = self.parent[v]
-        return v
