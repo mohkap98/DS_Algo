@@ -1,0 +1,33 @@
+class Solution:
+    def shortestBridge(self, grid: List[List[int]]):
+        n = len(grid)
+        seen = set()
+        def DFS(r,c):
+            if r < 0 or c < 0 or r >= n or c >= n or grid[r][c] == 0 or (r,c) in seen:
+                return 
+            seen.add((r,c))
+            DFS(r,c+1)
+            DFS(r,c-1)
+            DFS(r+1,c)
+            DFS(r-1,c)
+        def find_island1():
+            for i in range(n):
+                for j in range(n):
+                    if grid[i][j] == 1:
+                        DFS(i, j)
+                        return
+
+        find_island1()
+        q = deque([(r,c,0) for r,c in seen])
+        visited = set(seen)
+        while q:
+            r,c,dist = q.popleft()
+            if grid[r][c] == 1 and (r,c) not in seen:
+                return dist - 1
+            for nr, nc in [(0,1),(1,0),(0,-1),(-1,0)]:
+                row, col = r + nr, c + nc
+                if 0 <= row < n and 0 <= col < n and (row,col) not in visited:
+                    visited.add((row, col))
+                    q.append((row, col, dist + 1))
+        
+        return -1
