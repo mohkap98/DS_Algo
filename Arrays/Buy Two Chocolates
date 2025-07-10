@@ -1,0 +1,14 @@
+class Solution:
+    def buyChoco(self, prices: List[int], money: int) -> int:
+        cp1, cp2 = inf, inf
+        for price in prices:
+            if price < cp1:
+                cp2 = cp1
+                cp1 = price
+            elif cp1 <= price and price < cp2:
+                cp2 = price
+        
+        left = money - cp1 - cp2
+        return money if left < 0 else left
+
+        
