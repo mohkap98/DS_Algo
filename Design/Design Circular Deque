@@ -1,0 +1,75 @@
+class ListNode:
+    def __init__(self, val=0):
+        self.val = val
+        self.next = self.prev = None
+
+class MyCircularDeque:
+
+    def __init__(self, k: int):
+        self.front = self.rear = ListNode()
+        self.front.next = self.rear
+        self.rear.prev = self.front
+        
+        self.cap = k
+        self.count = 0
+
+    def insertFront(self, value: int) -> bool:
+        if self.isFull():
+            return False
+        node = ListNode(value)
+        nxt_node = self.front.next
+        self.front.next = nxt_node.prev = node
+        node.next = nxt_node
+        node.prev = self.front
+        self.count += 1
+        return True 
+
+    def insertLast(self, value: int) -> bool:
+        if self.isFull():
+            return False
+        node = ListNode(value)
+        prev_node = self.rear.prev
+        prev_node.next = self.rear.prev = node
+        node.next = self.rear
+        node.prev = prev_node
+        self.count += 1
+        return True 
+
+    def deleteFront(self) -> bool:
+        if self.isEmpty():
+            return False
+        node = self.front.next
+        nxt_node = node.next
+        self.front.next = nxt_node
+        nxt_node.prev = self.front
+        node.next = node.prev = None
+        self.count -= 1 
+        return True
+
+    def deleteLast(self) -> bool:
+        if self.isEmpty():
+            return False
+        node = self.rear.prev
+        prev_node = node.prev
+        prev_node.next = self.rear
+        self.rear.prev = prev_node
+        node.next = node.prev = None
+        self.count -= 1
+        return True
+
+    def getFront(self) -> int:
+        if self.isEmpty():
+            return -1
+        return self.front.next.val
+
+    def getRear(self) -> int:
+        if self.isEmpty():
+            return -1
+        return self.rear.prev.val
+
+    def isEmpty(self) -> bool:
+        return self.count == 0
+
+    def isFull(self) -> bool:
+        return self.count == self.cap
+
