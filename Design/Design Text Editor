@@ -1,0 +1,58 @@
+class Command:
+    def execute(self, val):
+        pass
+
+class WriteCommand(Command):
+    def __init__(self, text):
+        self.text = text
+
+    def execute(self, cur_text):
+        return cur_text + self.text
+
+class DeleteCommand(Command):
+    def __init__(self, n):
+        self.n = n
+
+    def execute(self, cur_text):
+        return cur_text[:-self.n] if self.n <= len(cur_text) else ""
+
+class TextEditor:
+    def __init__(self):
+        self.text = ""
+        self.undo_stack = []  # (command, prev_text)
+        self.redo_stack = []  # (command, prev_text)
+
+    def apply_command(self, *commands):
+        for command in commands:
+            prev_text = self.text
+            self.text = command.execute(self.text)
+            self.undo_stack.append((command, prev_text))
+            self.redo_stack.clear()  # New command clears redo stack
+
+    def undo(self):
+        if not self.undo_stack:
+            print("Nothing to undo")
+            return self.text
+        command, prev_text = self.undo_stack.pop()
+        self.redo_stack.append((command, self.text))
+        self.text = prev_text
+        return self.text
+
+    def redo(self):
+        if not self.redo_stack:
+            print("Nothing to redo")
+            return self.text
+        command, prev_text = self.redo_stack.pop()
+        self.undo_stack.append((command, self.text))
+        self.text = command.execute(self.text)
+        return self.text
+
+# Test
+te = TextEditor()
+te.apply_command(WriteCommand("Hello"), WriteCommand(" World"), DeleteCommand(6))
+print("After edits:", te.text)             # "Hello"
+
+print("Undo 1:", te.undo())                # "Hello World"
+print("Undo 2:", te.undo())                # "Hello"
+print("Redo 1:", te.redo())                # "Hello World"
+print("Redo 2:", te.redo())                # "Hello"
