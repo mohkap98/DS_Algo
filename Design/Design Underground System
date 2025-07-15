@@ -1,0 +1,29 @@
+class UndergroundSystem:
+
+    def __init__(self):
+        self.customers = {}
+        self.stations = {}
+
+    def checkIn(self, id: int, stationName: str, t: int) -> None:
+        self.customers[id] = (stationName, t)
+
+    def checkOut(self, id: int, stationName: str, t: int) -> None:
+        st_station, st_time = self.customers[id]
+        hash_key = (st_station, stationName)
+        if hash_key not in self.stations:
+            self.stations[hash_key] = [t - st_time, 1]
+        else:
+            prev_time, freq = self.stations[hash_key]
+            prev_time += (t - st_time)
+            self.stations[hash_key] = [prev_time, freq + 1]   
+
+    def getAverageTime(self, startStation: str, endStation: str) -> float:
+        time, freq = self.stations[(startStation, endStation)]
+        return time / freq
+
+
+# Your UndergroundSystem object will be instantiated and called as such:
+# obj = UndergroundSystem()
+# obj.checkIn(id,stationName,t)
+# obj.checkOut(id,stationName,t)
+# param_3 = obj.getAverageTime(startStation,endStation)
