@@ -1,0 +1,24 @@
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        if numRows == 1:
+            return s
+        matrix = [[] for _ in range(numRows)]
+
+        idx = 0
+        for ch in s:
+            if idx == 0:
+                direct = 1
+            matrix[idx].append(ch)
+            if idx >= numRows - 1:
+                direct = -1
+            idx += direct
+            
+        ans = ""
+        for row in matrix:
+            ans += "".join(row)
+
+        return ans
+
+
+
+        
